@@ -1,0 +1,2910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asella Organic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --g900:#0d2e10; --g800:#1a4d1e; --g700:#2e7d32; --g600:#388e3c;
+  --g500:#43a047; --g300:#81c784; --g200:#c8e6c9; --g100:#e8f5e9; --g50:#f4faf4;
+  --ink:#1a2e1b; --ink2:#3a5c3a; --muted:#6b8f6e; --border:#d4ecd4;
+  --white:#ffffff; --cream:#f7fdf7; --red:#e53935; --amber:#f59e0b;
+  --sh:0 2px 20px rgba(30,80,30,.08); --sh2:0 8px 40px rgba(30,80,30,.16);
+  --sh3:0 20px 60px rgba(30,80,30,.2);
+  --rad:16px; --rad2:24px; --rad3:32px;
+  --trans:all .25s cubic-bezier(.4,0,.2,1);
+  --sidebar-w:290px;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; font-size:15px; }
+body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--ink); overflow-x:hidden; }
+button { cursor:pointer; font-family:inherit; border:none; background:none; }
+a { text-decoration:none; color:inherit; }
+input,select,textarea { font-family:inherit; }
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-thumb { background:var(--g200); border-radius:4px; }
+
+/* ─── NAV ─── */
+#nav {
+  position:sticky; top:0; z-index:900;
+  background:rgba(255,255,255,.97); backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 5%; height:68px;
+  box-shadow:0 2px 24px rgba(30,80,30,.07);
+}
+.nav-logo { font-family:'Outfit',sans-serif; font-weight:900; font-size:1.5rem; color:var(--g700); display:flex; align-items:center; gap:8px; }
+.nav-logo i { font-size:1.3rem; }
+.nav-right { display:flex; align-items:center; gap:10px; }
+.nav-user-badge { display:none; align-items:center; gap:8px; background:var(--g100); border-radius:40px; padding:6px 14px 6px 8px; font-size:.85rem; font-weight:600; color:var(--g700); }
+.nav-user-badge .role-dot { width:8px; height:8px; border-radius:50%; background:var(--g500); }
+.nav-user-badge.show { display:flex; }
+
+/* ─── BUTTONS ─── */
+.btn { display:inline-flex; align-items:center; gap:8px; padding:11px 24px; border-radius:50px; font-weight:600; font-size:.9rem; transition:var(--trans); cursor:pointer; }
+.btn-primary { background:var(--g700); color:#fff; box-shadow:0 4px 14px rgba(46,125,50,.3); }
+.btn-primary:hover { background:var(--g800); transform:translateY(-2px); box-shadow:0 6px 20px rgba(46,125,50,.4); }
+.btn-outline { border:2px solid var(--g700); color:var(--g700); background:transparent; }
+.btn-outline:hover { background:var(--g700); color:#fff; transform:translateY(-2px); }
+.btn-ghost { color:var(--g700); background:rgba(46,125,50,.08); }
+.btn-ghost:hover { background:rgba(46,125,50,.15); }
+.btn-danger { background:var(--red); color:#fff; }
+.btn-danger:hover { background:#c62828; }
+.btn-sm { padding:7px 16px; font-size:.82rem; }
+.btn-icon { width:40px; height:40px; border-radius:50%; padding:0; justify-content:center; }
+
+/* ─── TOAST ─── */
+#toastContainer { position:fixed; bottom:30px; right:24px; z-index:99999; display:flex; flex-direction:column-reverse; gap:10px; pointer-events:none; }
+.toast { pointer-events:all; background:#fff; border-radius:14px; padding:14px 18px; box-shadow:var(--sh2); border-left:4px solid var(--g700); font-size:.88rem; font-weight:500; max-width:320px; display:flex; align-items:center; gap:10px; animation:toastIn .3s ease; }
+.toast.error { border-color:var(--red); }
+.toast.warn  { border-color:var(--amber); }
+.toast i { font-size:1rem; }
+.toast.success i { color:var(--g700); }
+.toast.error   i { color:var(--red); }
+.toast.warn    i { color:var(--amber); }
+@keyframes toastIn { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
+
+/* ─── HERO ─── */
+#hero {
+  min-height:75vh; background:linear-gradient(145deg,#f0f9f0 0%,#e8f5e9 60%,#dff0df 100%);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:100px 5% 80px; position:relative; overflow:hidden;
+}
+#hero::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232e7d32' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"); pointer-events:none; z-index:0; }
+.hero-tag { background:var(--g100); color:var(--g700); padding:6px 16px; border-radius:40px; font-size:.82rem; font-weight:700; letter-spacing:.5px; margin-bottom:28px; display:inline-block; border:1px solid var(--g200); position:relative; z-index:1; }
+.hero-title { font-family:'Outfit',sans-serif; font-size:clamp(2.8rem,6vw,5.2rem); font-weight:900; line-height:1.1; color:var(--g900); margin-bottom:24px; position:relative; z-index:1; }
+.hero-title span { color:var(--g600); }
+.hero-sub { font-size:clamp(1rem,2vw,1.25rem); color:var(--ink2); max-width:640px; line-height:1.7; margin-bottom:44px; font-weight:400; position:relative; z-index:1; }
+.hero-btns { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; position:relative; z-index:1; }
+.hero-btns .btn { min-width:160px; justify-content:center; }
+.hero-scroll { position:absolute; bottom:32px; left:50%; transform:translateX(-50%); color:var(--muted); font-size:.8rem; display:flex; flex-direction:column; align-items:center; gap:6px; animation:bounce 2s infinite; }
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+/* ─── STAT STRIP ─── */
+.stat-strip { background:var(--g700); color:#fff; display:flex; justify-content:center; gap:0; }
+.stat-item { padding:22px 40px; text-align:center; border-right:1px solid rgba(255,255,255,.15); flex:1; max-width:220px; }
+.stat-item:last-child { border-right:none; }
+.stat-val { font-family:'Outfit',sans-serif; font-size:2rem; font-weight:800; }
+.stat-lbl { font-size:.78rem; opacity:.8; margin-top:4px; letter-spacing:.4px; }
+
+/* ─── PRODUCTS ─── */
+#products { padding:100px 5%; background:var(--white); }
+.section-header { text-align:center; margin-bottom:60px; }
+.section-tag { color:var(--g700); font-weight:700; font-size:.82rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:12px; }
+.section-title { font-family:'Outfit',sans-serif; font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; color:var(--g900); margin-bottom:16px; }
+.section-desc { color:var(--muted); max-width:560px; margin:0 auto; line-height:1.7; }
+.products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:24px; max-width:1300px; margin:0 auto; }
+.pcard { background:#fff; border-radius:var(--rad2); border:1px solid var(--border); overflow:hidden; transition:var(--trans); position:relative; }
+.pcard:hover { transform:translateY(-6px); box-shadow:var(--sh2); border-color:var(--g300); }
+.pcard-img { width:100%; height:170px; object-fit:cover; background:var(--g50); display:block; }
+.pcard-body { padding:18px 20px 20px; }
+.pcard-name { font-family:'Outfit',sans-serif; font-weight:700; font-size:1rem; color:var(--g900); margin-bottom:6px; line-height:1.3; }
+.pcard-price { font-size:1.2rem; font-weight:800; color:var(--g700); margin-bottom:14px; font-family:'Outfit',sans-serif; }
+.pcard-actions { display:flex; gap:8px; }
+.pcard-actions .btn { flex:1; justify-content:center; padding:9px 12px; font-size:.82rem; }
+.pcard-detail-btn { background:var(--g50); color:var(--g700); border:1px solid var(--border); border-radius:10px; padding:9px 12px; font-size:.82rem; font-weight:600; transition:var(--trans); }
+.pcard-detail-btn:hover { background:var(--g100); }
+
+/* ─── ABOUT ─── */
+#about { padding:100px 5%; background:var(--g50); }
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; max-width:1100px; margin:0 auto; }
+.about-text h2 { font-family:'Outfit',sans-serif; font-size:clamp(1.8rem,3vw,2.6rem); font-weight:800; color:var(--g900); margin-bottom:24px; }
+.about-text p { color:var(--ink2); line-height:1.8; font-size:1rem; margin-bottom:16px; }
+.about-vals { display:flex; flex-direction:column; gap:16px; }
+.about-val { background:#fff; border-radius:var(--rad); padding:20px; border:1px solid var(--border); display:flex; gap:14px; align-items:flex-start; }
+.about-val-icon { width:42px; height:42px; background:var(--g100); border-radius:12px; display:flex; align-items:center; justify-content:center; color:var(--g700); font-size:1.1rem; flex-shrink:0; }
+.about-val-title { font-weight:700; color:var(--g900); margin-bottom:4px; font-size:.95rem; }
+.about-val-desc { color:var(--muted); font-size:.85rem; line-height:1.5; }
+
+/* ─── CONTACT ─── */
+#contact { padding:100px 5%; background:var(--white); }
+/* Two-column: left = Visit HQ (spans full height), right = two stacked support cards */
+.contact-grid { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:auto; gap:24px; max-width:900px; margin:0 auto 60px; align-items:stretch; }
+.contact-left  { display:flex; flex-direction:column; }
+.contact-right { display:flex; flex-direction:column; gap:24px; }
+.ccard { background:var(--g50); border-radius:var(--rad2); padding:40px 30px; text-align:center; border:1px solid var(--border); transition:var(--trans); }
+.contact-left .ccard { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.contact-right .ccard { flex:1; }
+.ccard:hover { transform:translateY(-4px); box-shadow:var(--sh); }
+.ccard i { font-size:2rem; color:var(--g700); margin-bottom:16px; display:block; }
+.ccard h3 { font-family:'Outfit',sans-serif; font-weight:700; font-size:1.2rem; margin-bottom:8px; color:var(--g900); }
+.ccard p { color:var(--muted); font-size:.92rem; margin-bottom:20px; }
+.ccard .ch-badge { display:inline-block; font-size:.68rem; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--g700); background:var(--g100); border:1px solid var(--g200); border-radius:20px; padding:3px 10px; margin-bottom:8px; }
+.social-row { display:flex; justify-content:center; gap:14px; }
+.social-btn { width:52px; height:52px; border-radius:50%; background:var(--g50); color:var(--g700); display:flex; align-items:center; justify-content:center; font-size:1.2rem; border:1px solid var(--border); transition:var(--trans); }
+.social-btn:hover { background:var(--g700); color:#fff; transform:translateY(-3px); box-shadow:0 8px 20px rgba(46,125,50,.25); }
+
+/* ─── FOOTER ─── */
+footer { background:var(--g900); color:rgba(255,255,255,.7); text-align:center; padding:28px 5%; font-size:.85rem; }
+footer span { color:#fff; font-weight:600; }
+
+/* ─── SIDEBAR ─── */
+#sidebar {
+  position:fixed; top:0; right:0; width:var(--sidebar-w); height:100%;
+  background:var(--g800); z-index:2000; padding:0;
+  transform:translateX(100%); transition:transform .35s cubic-bezier(.4,0,.2,1);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+#sidebar.open { transform:translateX(0); box-shadow:-8px 0 40px rgba(0,0,0,.3); }
+.sb-head { padding:24px 20px 20px; border-bottom:1px solid rgba(255,255,255,.1); }
+.sb-close { position:absolute; top:16px; right:16px; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,.1); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.1rem; cursor:pointer; transition:var(--trans); }
+.sb-close:hover { background:rgba(255,255,255,.2); }
+.sb-user { display:flex; align-items:center; gap:12px; }
+.sb-avatar { width:44px; height:44px; border-radius:50%; background:var(--g600); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:1.1rem; font-family:'Outfit',sans-serif; }
+.sb-name { font-weight:700; color:#fff; font-size:.95rem; font-family:'Outfit',sans-serif; }
+.sb-role { font-size:.75rem; color:var(--g300); font-weight:500; text-transform:capitalize; }
+.sb-body { flex:1; overflow-y:auto; padding:16px 12px; }
+.sb-section-label { font-size:.65rem; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; color:rgba(255,255,255,.4); padding:14px 10px 8px; }
+.sb-link { display:flex; align-items:center; gap:11px; padding:12px 14px; border-radius:12px; color:rgba(255,255,255,.85); font-size:.9rem; font-weight:500; cursor:pointer; transition:var(--trans); margin-bottom:2px; }
+.sb-link i { width:18px; text-align:center; opacity:.8; font-size:.9rem; }
+.sb-link:hover { background:rgba(255,255,255,.1); color:#fff; }
+.sb-link.active { background:rgba(255,255,255,.15); color:#fff; font-weight:600; }
+.sb-link.danger { color:rgba(255,100,100,.85); }
+.sb-link.danger:hover { background:rgba(255,100,100,.12); color:var(--red); }
+.sb-foot { padding:14px 12px; border-top:1px solid rgba(255,255,255,.1); }
+#sbOverlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:1999; backdrop-filter:blur(2px); }
+#sbOverlay.show { display:block; }
+
+/* ─── LOGIN MODAL ─── */
+#loginModal {
+  display:none; position:fixed; inset:0; z-index:9999;
+  background:rgba(0,0,0,.6); backdrop-filter:blur(10px);
+  align-items:center; justify-content:center;
+}
+#loginModal.show { display:flex; }
+.modal-box { background:#fff; border-radius:var(--rad3); padding:44px 40px; width:100%; max-width:400px; box-shadow:var(--sh3); animation:modalIn .3s ease; position:relative; }
+@keyframes modalIn { from{opacity:0;transform:scale(.94) translateY(20px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.modal-box h2 { font-family:'Outfit',sans-serif; font-size:1.7rem; font-weight:800; color:var(--g900); margin-bottom:6px; }
+.modal-box .modal-sub { color:var(--muted); font-size:.9rem; margin-bottom:30px; }
+.modal-close { position:absolute; top:16px; right:16px; width:34px; height:34px; border-radius:50%; background:var(--g50); color:var(--muted); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:var(--trans); }
+.modal-close:hover { background:var(--g100); color:var(--ink); }
+
+/* ─── FORM ELEMENTS ─── */
+.field { margin-bottom:18px; }
+.field label { display:block; font-size:.82rem; font-weight:700; color:var(--g700); margin-bottom:7px; letter-spacing:.2px; }
+.field input, .field select, .field textarea {
+  width:100%; padding:13px 16px; border:1.5px solid var(--border);
+  border-radius:12px; font-size:.93rem; color:var(--ink); background:#fff;
+  transition:var(--trans); outline:none;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color:var(--g700); box-shadow:0 0 0 4px rgba(46,125,50,.1); }
+.field input.err, .field select.err { border-color:var(--red); }
+.field .hint { font-size:.75rem; color:var(--muted); margin-top:5px; }
+.field .err-msg { font-size:.75rem; color:var(--red); margin-top:5px; display:none; }
+
+.phone-wrap {
+  display: flex;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: visible;
+  background: #fff;
+  transition: var(--trans);
+  width: 100%;
+  position: relative;
+}
+.cc-btn {
+  display: flex; align-items: center; gap: 5px;
+  flex: 0 0 96px;
+  padding: 12px 8px 12px 11px;
+  border: none; border-right: 1.5px solid var(--border);
+  border-radius: 11px 0 0 11px;
+  background: var(--g50); cursor: pointer;
+  font-size: .85rem; font-weight: 700; color: var(--g800);
+  white-space: nowrap; transition: background .15s; box-sizing: border-box;
+}
+.cc-btn:hover { background: var(--g100); }
+.cc-btn .cc-flag { font-size: 1.1rem; }
+.cc-btn .cc-arr  { font-size: .55rem; color: var(--g500); margin-left:1px; transition: transform .2s; }
+.cc-btn.open .cc-arr { transform: rotate(180deg); }
+.cc-drop {
+  display: none; position: absolute; top: calc(100% + 5px); left: 0;
+  width: 260px; background: #fff;
+  border: 1.5px solid var(--border); border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.14); z-index: 5000; overflow: hidden;
+}
+.cc-drop.open { display: block; }
+.cc-drop-search { padding: 8px 8px 6px; border-bottom: 1px solid var(--border); }
+.cc-drop-search input {
+  width: 100%; border: 1.5px solid var(--border); border-radius: 8px;
+  padding: 7px 10px; font-size: .84rem; outline: none; box-sizing: border-box;
+}
+.cc-drop-search input:focus { border-color: var(--g500); }
+.cc-drop-list { max-height: 210px; overflow-y: auto; padding: 3px 0; }
+.cc-drop-list::-webkit-scrollbar { width: 4px; }
+.cc-drop-list::-webkit-scrollbar-thumb { background: var(--g200); border-radius: 3px; }
+.cc-opt {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 12px; cursor: pointer; font-size: .85rem; transition: background .1s;
+}
+.cc-opt:hover, .cc-opt.sel { background: var(--g50); }
+.cc-opt-flag { font-size: 1.05rem; flex-shrink: 0; }
+.cc-opt-name { flex: 1; color: var(--g800); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cc-opt-code { font-size: .77rem; font-weight: 700; color: var(--g600); flex-shrink: 0; }
+.phone-num {
+  flex: 1; min-width: 0; border: none;
+  padding: 13px 14px; font-size: .93rem; outline: none;
+  box-sizing: border-box; background: transparent;
+}
+@media(max-width:480px) {
+  .phone-wrap { flex-direction: row; }
+  .cc-btn { flex: 0 0 82px; padding: 12px 6px 12px 9px; }
+  .cc-drop { width: 230px; }
+}
+/* ─── MAIN OVERLAY ─── */
+#mainOverlay {
+  display:none; position:fixed; inset:0; z-index:3000;
+  background:rgba(244,250,244,.97); backdrop-filter:blur(4px);
+  overflow-y:auto; padding:20px 16px 40px;
+}
+#mainOverlay.show { display:block; }
+.ov-inner { max-width:920px; margin:0 auto; }
+.ov-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; padding-top:8px; }
+.ov-back { display:flex; align-items:center; gap:8px; color:var(--g700); font-weight:600; font-size:.92rem; cursor:pointer; transition:var(--trans); background:none; border:none; }
+.ov-back:hover { gap:12px; }
+.ov-back i { font-size:.85rem; }
+.ov-meta { font-size:.85rem; color:var(--muted); }
+.ov-meta span { color:var(--g700); font-weight:700; }
+.form-card { background:#fff; border-radius:var(--rad3); padding:44px 48px; box-shadow:var(--sh2); border-top:5px solid var(--g700); }
+.form-title { font-family:'Outfit',sans-serif; font-size:1.7rem; font-weight:800; color:var(--g900); margin-bottom:6px; }
+.form-sub { color:var(--muted); font-size:.88rem; margin-bottom:32px; padding-bottom:24px; border-bottom:1px solid var(--border); }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+
+/* ─── ITEM ROWS ─── */
+.items-section { margin:28px 0; }
+.items-section h4 { font-family:'Outfit',sans-serif; font-weight:700; font-size:1rem; color:var(--g700); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+.item-row { background:var(--g50); border:1.5px solid var(--border); border-radius:var(--rad); padding:20px; margin-bottom:14px; transition:var(--trans); position:relative; }
+.item-row:hover { border-color:var(--g300); }
+.item-row-grid { display:grid; gap:14px; align-items:end; }
+.item-remove { position:absolute; top:12px; right:12px; width:28px; height:28px; border-radius:50%; background:rgba(229,57,53,.1); color:var(--red); display:flex; align-items:center; justify-content:center; font-size:.85rem; cursor:pointer; transition:var(--trans); }
+.item-remove:hover { background:rgba(229,57,53,.2); }
+.add-item-btn { width:100%; padding:13px; border:2px dashed var(--g300); border-radius:var(--rad); color:var(--g700); font-weight:600; font-size:.88rem; background:transparent; transition:var(--trans); display:flex; align-items:center; justify-content:center; gap:8px; }
+.add-item-btn:hover { background:var(--g50); border-color:var(--g700); }
+
+/* ─── TOTAL BOX ─── */
+.total-box { background:var(--g700); color:#fff; border-radius:var(--rad); padding:18px 24px; text-align:right; font-family:'Outfit',sans-serif; font-size:1.3rem; font-weight:700; margin:20px 0; }
+.delivery-note { background:var(--g50); border-left:4px solid var(--g700); border-radius:0 var(--rad) var(--rad) 0; padding:14px 18px; font-size:.85rem; line-height:1.6; color:var(--ink2); margin:16px 0; }
+
+/* ─── FILE UPLOAD ─── */
+.file-upload { border:2px dashed var(--border); border-radius:var(--rad); padding:28px; text-align:center; cursor:pointer; transition:var(--trans); }
+.file-upload:hover { border-color:var(--g500); background:var(--g50); }
+.file-upload i { font-size:1.8rem; color:var(--g300); margin-bottom:8px; display:block; }
+.file-upload p { color:var(--muted); font-size:.85rem; }
+.file-upload input { display:none; }
+
+/* ─── SUBMIT ─── */
+.submit-row { display:flex; gap:14px; margin-top:28px; }
+.submit-btn { flex:1; padding:16px; border-radius:50px; background:var(--g700); color:#fff; font-family:'Outfit',sans-serif; font-weight:700; font-size:1rem; letter-spacing:.3px; transition:var(--trans); border:none; display:flex; align-items:center; justify-content:center; gap:10px; }
+.submit-btn:hover:not(:disabled) { background:var(--g800); transform:translateY(-2px); box-shadow:0 8px 24px rgba(46,125,50,.35); }
+.submit-btn:disabled { opacity:.6; cursor:not-allowed; }
+.spin { animation:spin .7s linear infinite; display:none; }
+@keyframes spin { to{transform:rotate(360deg)} }
+.submit-btn.loading .spin { display:inline-block; }
+.submit-btn.loading .btn-text { display:none; }
+
+/* ─── ORDER TRACKING ─── */
+.track-toolbar { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; align-items:center; }
+.track-toolbar input, .track-toolbar select { padding:10px 14px; border:1.5px solid var(--border); border-radius:10px; font-size:.85rem; background:#fff; outline:none; transition:var(--trans); }
+.track-toolbar input:focus, .track-toolbar select:focus { border-color:var(--g700); }
+.track-toolbar input[type="text"] { min-width:220px; flex:1; }
+.table-wrap { overflow-x:auto; background:#fff; border-radius:var(--rad2); border:1px solid var(--border); }
+.data-table { width:100%; border-collapse:collapse; font-size:.84rem; min-width:700px; }
+.data-table thead th { background:var(--g50); padding:12px 14px; text-align:left; font-size:.73rem; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); border-bottom:1.5px solid var(--border); white-space:nowrap; position:sticky; top:0; }
+.data-table tbody tr { border-bottom:1px solid var(--g50); cursor:pointer; transition:background .12s; }
+.data-table tbody tr:hover { background:var(--g50); }
+.data-table td { padding:12px 14px; vertical-align:middle; }
+.status-badge { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.3px; }
+.status-badge::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; }
+.s-pending  { background:#fef3c7; color:#92400e; }
+.s-confirmed{ background:#dbeafe; color:#1e40af; }
+.s-packed   { background:#ede9fe; color:#5b21b6; }
+.s-transit  { background:#cffafe; color:#155e75; }
+.s-delivered{ background:#dcfce7; color:#166534; }
+.s-cancelled{ background:#fee2e2; color:#991b1b; }
+.src-badge  { display:inline-flex; align-items:center; padding:2px 8px; border-radius:20px; font-size:.7rem; font-weight:700; }
+.src-sales     { background:#dbeafe; color:#1e40af; }
+.src-order     { background:#fce7f3; color:#9d174d; }
+.src-franchise { background:#ede9fe; color:#5b21b6; }
+.empty-state { padding:60px 20px; text-align:center; color:var(--muted); }
+.empty-state i { font-size:2.5rem; margin-bottom:14px; display:block; opacity:.3; }
+.pagination { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-top:1px solid var(--border); font-size:.83rem; color:var(--muted); }
+.page-btns { display:flex; gap:6px; }
+.page-btn { width:32px; height:32px; border-radius:8px; border:1.5px solid var(--border); background:#fff; font-size:.8rem; font-weight:600; color:var(--ink); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:var(--trans); }
+.page-btn:hover, .page-btn.active { background:var(--g700); color:#fff; border-color:var(--g700); }
+
+/* ─── STATUS EDITOR ─── */
+.order-detail-panel { background:#fff; border-radius:var(--rad2); padding:28px; margin-top:20px; border:1.5px solid var(--border); display:none; }
+.order-detail-panel.show { display:block; }
+.detail-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; margin-bottom:24px; }
+.detail-item label { font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); display:block; margin-bottom:4px; }
+.detail-item span { font-weight:600; color:var(--ink); font-size:.9rem; }
+.item-edit-row { display:grid; grid-template-columns:2fr 1fr 1fr auto; gap:8px; align-items:end; margin-bottom:8px; padding:10px; background:var(--g50); border-radius:var(--rad); border:1px solid var(--border); }
+.item-edit-row .field { margin:0; }
+.item-edit-row label { font-size:.72rem; }
+.item-edit-row input, .item-edit-row select { padding:7px 10px; font-size:.84rem; }
+.item-del-btn { background:#fee2e2; border:none; color:#dc2626; border-radius:8px; width:32px; height:32px; cursor:pointer; font-size:.9rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:18px; }
+.item-del-btn:hover { background:#fca5a5; }
+.mod-section { margin-top:22px; padding-top:18px; border-top:1.5px dashed var(--border); }
+.mod-section h5 { font-family:'Outfit',sans-serif; font-weight:700; font-size:.92rem; color:var(--g900); margin-bottom:14px; display:flex; align-items:center; gap:7px; }
+
+
+/* ─── ANALYTICS ─── */
+.analytics-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:20px; margin-bottom:32px; }
+.kpi-card { background:#fff; border-radius:var(--rad); padding:22px; border:1px solid var(--border); }
+.kpi-label { font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); margin-bottom:8px; }
+.kpi-val { font-family:'Outfit',sans-serif; font-size:2rem; font-weight:800; color:var(--g900); }
+.kpi-sub { font-size:.78rem; color:var(--muted); margin-top:4px; }
+.chart-section { background:#fff; border-radius:var(--rad2); padding:28px; border:1px solid var(--border); margin-bottom:20px; }
+.chart-section h4 { font-family:'Outfit',sans-serif; font-weight:700; font-size:1rem; margin-bottom:20px; color:var(--g900); }
+.bar-chart { display:flex; flex-direction:column; gap:10px; }
+.bar-row { display:flex; align-items:center; gap:12px; }
+.bar-label { width:160px; font-size:.82rem; color:var(--ink2); text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex-shrink:0; }
+.bar-track { flex:1; background:var(--g50); border-radius:50px; height:10px; }
+.bar-fill { height:100%; border-radius:50px; background:var(--g600); min-width:4px; transition:width .6s ease; }
+.bar-val { font-size:.8rem; font-weight:600; color:var(--muted); width:50px; flex-shrink:0; }
+
+/* ─── USER MANAGEMENT ─── */
+.user-table { width:100%; border-collapse:collapse; font-size:.88rem; }
+.user-table th { padding:10px 14px; text-align:left; font-size:.73rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); border-bottom:1.5px solid var(--border); }
+.user-table td { padding:12px 14px; border-bottom:1px solid var(--border); }
+.user-table tr:hover td { background:var(--g50); }
+.role-chip { padding:3px 10px; border-radius:20px; font-size:.72rem; font-weight:800; text-transform:capitalize; }
+.role-admin   { background:#fee2e2; color:#991b1b; }
+.role-manager { background:#fef3c7; color:#92400e; }
+.role-staff   { background:#dcfce7; color:#166534; }
+.add-user-form { background:var(--g50); border-radius:var(--rad); padding:24px; border:1px solid var(--border); margin-top:24px; }
+.add-user-form h4 { font-weight:700; color:var(--g900); margin-bottom:16px; font-family:'Outfit',sans-serif; }
+
+/* ─── CHANGE PASSWORD ─── */
+.cp-card { background:#fff; border-radius:var(--rad2); padding:36px; max-width:480px; margin:0 auto; border:1px solid var(--border); box-shadow:var(--sh); }
+.cp-card h3 { font-family:'Outfit',sans-serif; font-weight:700; font-size:1.3rem; margin-bottom:6px; color:var(--g900); }
+.cp-card p { color:var(--muted); font-size:.88rem; margin-bottom:24px; }
+
+/* ─── SECTION REVEAL ─── */
+.reveal { opacity:1; transform:none; }
+
+/* ─── LOADING SPINNER ─── */
+.page-loader { display:flex; align-items:center; justify-content:center; min-height:200px; }
+.page-loader i { font-size:2rem; color:var(--g300); animation:spin .8s linear infinite; }
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px) {
+  .about-grid { grid-template-columns:1fr; }
+  .contact-grid { grid-template-columns:1fr; }
+  .contact-right { gap:16px; }
+  .grid2 { grid-template-columns:1fr; }
+  .grid3 { grid-template-columns:1fr; }
+  .form-card { padding:20px 16px; }
+  .stat-strip { flex-wrap:wrap; }
+  .stat-item { min-width:50%; border-bottom:1px solid rgba(255,255,255,.1); }
+  .products-grid { grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:14px; }
+  .track-toolbar { flex-direction:column; }
+  .track-toolbar input[type="text"] { min-width:100%; }
+  .hero-title { font-size:2.2rem; }
+  .hero-btns { flex-direction:column; align-items:center; gap:10px; }
+  .hero-btns .btn { width:100%; max-width:280px; }
+  #mainOverlay { padding:0 0 40px; }
+  .ov-inner { padding:0; }
+  .ov-top { padding:12px 16px 0; margin-bottom:16px; }
+  .form-card { border-radius:0; border-top:5px solid var(--g700); }
+  .item-row-grid { grid-template-columns:1fr 1fr !important; gap:10px; }
+  .item-row { padding:14px 14px 40px; }
+  .item-remove { top:auto; bottom:10px; right:10px; }
+  .bar-label { width:100px; font-size:.76rem; }
+  .analytics-grid { grid-template-columns:1fr 1fr; }
+  .data-table { font-size:.76rem; }
+  .data-table th, .data-table td { padding:8px 10px; }
+  .pcard-img { height:160px; }
+}
+@media(max-width:480px) {
+  #nav { padding:0 4%; }
+  #hero { padding:70px 4% 50px; }
+  .hero-title { font-size:1.9rem; }
+  .form-card { padding:16px 12px; }
+  .item-row-grid { grid-template-columns:1fr !important; }
+  .analytics-grid { grid-template-columns:1fr; }
+  .pcard-img { height:140px; }
+  .pcard-body { padding:14px; }
+  .stat-item { min-width:100%; }
+  .phone-wrap { flex-direction:column; gap:8px; }
+  .phone-num { width:100%; }
+  .form-title { font-size:1.35rem; }
+  .submit-btn { font-size:.9rem; padding:13px; }
+  .add-item-btn { font-size:.8rem; padding:10px; }
+  .hero-btns .btn { max-width:100%; font-size:.85rem; }
+  .section-title { font-size:1.6rem; }
+}
+/* ─── RECEIPT MODAL ─── */
+.rc-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;z-index:3000;padding:20px;overflow-y:auto}
+.rc-overlay.open{display:flex}
+/* Thermal receipt card */
+.rc-card{background:#fff;width:100%;max-width:340px;border-radius:4px;box-shadow:0 8px 32px rgba(0,0,0,.35);overflow:hidden;animation:rcpop .35s cubic-bezier(.34,1.56,.64,1);font-family:'Courier New',Courier,monospace;font-size:12px;color:#000}
+@keyframes rcpop{from{transform:scale(.82);opacity:0}to{transform:scale(1);opacity:1}}
+/* Jagged top/bottom tape effect */
+.rc-card::before,.rc-card::after{content:'';display:block;height:10px;background:repeating-linear-gradient(90deg,#fff 0,#fff 5px,transparent 5px,transparent 10px),#e5e5e5;background-size:10px 100%;background-color:#e5e5e5}
+.rc-head{padding:16px 16px 8px;text-align:center;border-bottom:1px dashed #000}
+.rc-head h2{font-family:'Courier New',Courier,monospace;font-size:14px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;color:#000;margin-bottom:3px}
+.rc-head .rc-dt{font-family:'Courier New',Courier,monospace;font-size:11px;color:#333}
+.rc-body{padding:10px 16px 6px}
+.rc-grid{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin-bottom:8px;font-size:11px;font-family:'Courier New',Courier,monospace}
+.rc-lbl{font-weight:bold;color:#000;white-space:nowrap}.rc-val{color:#000;word-break:break-word;text-align:right}
+.rc-sec{font-size:11px;font-weight:bold;color:#000;margin:8px 0 5px;text-align:center;text-transform:uppercase;letter-spacing:.5px}
+.rc-tbl{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:8px;font-family:'Courier New',Courier,monospace}
+.rc-tbl thead th{font-weight:bold;text-align:left;padding:4px 3px;font-size:10px;text-transform:uppercase;border-bottom:1px solid #000;background:#fff;color:#000}
+.rc-tbl td{padding:3px;border-bottom:none;color:#000}
+.rc-tc{text-align:center;width:36px}.rc-tr{text-align:right;width:90px;font-weight:bold}
+.rc-sum{padding-top:6px;border-top:1px dashed #000;margin-top:6px;font-family:'Courier New',Courier,monospace}
+.rc-row{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px}
+.rc-row.big{font-size:13px;font-weight:bold;color:#000;padding-top:5px;border-top:1px solid #000;margin-top:4px}
+.rc-foot{text-align:center;margin-top:10px;border-top:1px dashed #000;padding-top:8px;font-family:'Courier New',Courier,monospace;font-size:10px;color:#333}
+.rc-foot .rc-st{font-weight:bold;color:#000;margin-bottom:6px;font-size:11px}
+.rc-foot .rc-ty{font-weight:bold;font-size:11px;color:#000;margin:5px 0 3px}
+.rc-divider{border:none;border-top:1px dashed #000;margin:7px 0}
+.rc-btns{display:flex;gap:9px;justify-content:center;margin:14px 0 10px;flex-wrap:wrap}
+.rc-btn{border:none;padding:9px 18px;border-radius:5px;cursor:pointer;font-size:.86rem;font-weight:600;transition:all .18s}
+.rc-btn-print{background:#065f46;color:#fff}.rc-btn-print:hover{background:#059669}
+.rc-btn-track{background:#1a1a1a;color:#fff}.rc-btn-track:hover{background:#333}
+.rc-btn-close{background:#e2e8f0;color:#2d3748}.rc-btn-close:hover{background:#cbd5e1}
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav id="nav">
+  <div class="nav-logo"><i class="fas fa-leaf"></i> Asella Organic</div>
+  <div class="nav-right">
+    <div class="nav-user-badge" id="navUserBadge">
+      <div class="role-dot"></div>
+      <span id="navUserName">Staff</span>
+    </div>
+    <button class="btn btn-ghost btn-sm" id="menuBtn" style="display:none" onclick="openSidebar()">
+      <i class="fas fa-bars"></i> Menu
+    </button>
+    <button class="btn btn-primary btn-sm" id="loginBtn" onclick="showLoginModal()">
+      <i class="fas fa-sign-in-alt"></i> Staff Login
+    </button>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-tag"><i class="fas fa-seedling"></i> 100% Ethiopian Organic</div>
+  <h1 class="hero-title">Nature's Purity,<br><span>Packaged for You.</span></h1>
+  <p class="hero-sub">Premium organic supplements, ethically sourced from Ethiopian farms and delivered with care.</p>
+  <div class="hero-btns">
+    <button class="btn btn-primary" onclick="openOrderForm('Sales')"><i class="fas fa-shopping-cart"></i> Place an Order</button>
+    <button class="btn btn-outline" onclick="var el=document.getElementById('about');if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}"><i class="fas fa-info-circle"></i> About Us</button>
+    <button class="btn btn-outline" onclick="openOrderForm('Franchise')"><i class="fas fa-store"></i> Bulk Orders</button>
+  </div>
+  <div class="hero-scroll"><i class="fas fa-chevron-down"></i></div>
+</section>
+
+<!-- ─── STAT STRIP ─── -->
+<div class="stat-strip">
+  <div class="stat-item"><div class="stat-val">17+</div><div class="stat-lbl">Organic Products</div></div>
+  <div class="stat-item"><div class="stat-val">5000+</div><div class="stat-lbl">Happy Customers</div></div>
+  <div class="stat-item"><div class="stat-val">100%</div><div class="stat-lbl">Natural Ingredients</div></div>
+  <div class="stat-item"><div class="stat-val">10</div><div class="stat-lbl">Ethiopian Farms</div></div>
+</div>
+
+<!-- ─── PRODUCTS ─── -->
+<section id="products">
+  <div class="section-header">
+    <div class="section-tag">Our Products</div>
+    <h2 class="section-title">Featured Organic Supplements</h2>
+    <p class="section-desc">Hand-picked, naturally dried, and processed to retain maximum potency.</p>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <div class="section-tag">Our Story</div>
+      <h2>Where Ethiopian Heritage Meets Modern Wellness</h2>
+      <p>Asella Organic Enterprise was founded with a simple mission: to bridge the gap between Ethiopia's rich, organic farmlands and the modern world's health needs.</p>
+      <p>We specialize in premium Moringa and organic supplements, ensuring every leaf is hand-picked, naturally dried, and processed to retain maximum potency. We aren't just a business — we are a community of farmers, packers, and health enthusiasts committed to sustainable growth.</p>
+    </div>
+    <div class="about-vals">
+      <div class="about-val">
+        <div class="about-val-icon"><i class="fas fa-leaf"></i></div>
+        <div><div class="about-val-title">100% Organic</div><div class="about-val-desc">Every product is grown without synthetic pesticides or fertilizers.</div></div>
+      </div>
+      <div class="about-val">
+        <div class="about-val-icon"><i class="fas fa-hand-holding-heart"></i></div>
+        <div><div class="about-val-title">Ethically Sourced </div><div class="about-val-desc">Fair wages and sustainable partnerships with local Ethiopian farmers.</div></div>
+      </div>
+      <div class="about-val">
+        <div class="about-val-icon"><i class="fas fa-flask"></i></div>
+        <div><div class="about-val-title">Quality Tested and approved by ECAE and AAFDA</div><div class="about-val-desc">Rigorous quality checks ensure potency and purity in every batch.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="section-header">
+    <div class="section-tag">Get in Touch</div>
+    <h2 class="section-title">We're Here for You</h2>
+  </div>
+  <div class="contact-grid">
+    <!-- Left: Visit HQ (full height) -->
+    <div class="contact-left">
+      <div class="ccard">
+        <i class="fas fa-map-marker-alt"></i>
+        <h3>Visit HQ</h3>
+        <p>Addis Ababa, Piazza Giorgis,<br>Ethel Appartment</p>
+        <a href="https://maps.app.goo.gl/mssptHZ9dAXRCbCh7" target="_blank" class="btn btn-outline btn-sm">Open Maps</a>
+      </div>
+    </div>
+    <!-- Right: two stacked support cards -->
+    <div class="contact-right">
+      <div class="ccard">
+        <i class="fas fa-phone-alt"></i>
+        <div class="ch-badge">አማርኛ · Amharic</div>
+        <h3>Call Support</h3>
+        <p>+251 909 122 623</p>
+        <a href="tel:+251909122623" class="btn btn-primary btn-sm">Call Now</a>
+      </div>
+      <div class="ccard">
+        <i class="fas fa-headset"></i>
+        <div class="ch-badge">Afaan Oromoo · Oromo</div>
+        <h3>Gargaarsa Bilbilaa</h3>
+        <p>+251 942 223 999</p>
+        <a href="tel:+251942223999" class="btn btn-outline btn-sm">Call Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="social-row">
+    <a href="https://t.me/asellamoringashop" target="_blank" class="social-btn"><i class="fab fa-telegram"></i></a>
+    <a href="https://www.facebook.com/share/1FkhkuGamB/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/asella_organic" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.tiktok.com/@asellaorganic" target="_blank" class="social-btn"><i class="fab fa-tiktok"></i></a>
+  </div>
+</section>
+
+<footer>&copy; 2026 <span>Asella Organic Enterprise</span>. All rights reserved.</footer>
+
+<!-- ─── SIDEBAR OVERLAY ─── -->
+<div id="sbOverlay" onclick="closeSidebar()"></div>
+
+<!-- ─── SIDEBAR ─── -->
+<div id="sidebar">
+  <div class="sb-head">
+    <button class="sb-close" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
+    <div class="sb-user">
+      <div class="sb-avatar" id="sbAvatar">G</div>
+      <div>
+        <div class="sb-name" id="sbName">Guest</div>
+        <div class="sb-role" id="sbRole">Not logged in</div>
+      </div>
+    </div>
+  </div>
+  <div class="sb-body">
+    <!-- Public -->
+    <div class="sb-section-label">Public</div>
+    <div class="sb-link" onclick="openOrderForm('Sales');closeSidebar()"><i class="fas fa-shopping-cart"></i> New Sales Order</div>
+
+    <!-- Staff+ -->
+    <div id="sbStaff" style="display:none">
+      <div class="sb-section-label">Partners</div>
+      <div class="sb-link" onclick="openOrderForm('Franchise');closeSidebar()"><i class="fas fa-store"></i> Bulk Orders</div>
+      <div class="sb-link" onclick="openOrderForm('Vendor');closeSidebar()"><i class="fas fa-truck"></i> Vendor Purchase</div>
+      <div class="sb-section-label">Internal</div>
+      <div class="sb-link" onclick="openOrderForm('Packaging');closeSidebar()"><i class="fas fa-box"></i> Packaging Log</div>
+      <div class="sb-link" onclick="openOrderForm('StockRequest');closeSidebar()"><i class="fas fa-exclamation-triangle"></i> Stock Alert <span id="lowStockBadge" style="display:none;background:#ef4444;color:#fff;border-radius:10px;font-size:.65rem;padding:1px 7px;margin-left:auto;font-weight:700"></span></div>
+      <div class="sb-link" onclick="openPanel('Tracking');closeSidebar()"><i class="fas fa-search"></i> Order Tracking <span id="pendingBadge" style="display:none;background:#f59e0b;color:#fff;border-radius:10px;font-size:.65rem;padding:1px 7px;margin-left:auto;font-weight:700"></span></div>
+    </div>
+
+    <!-- Manager only -->
+    <div id="sbManager" style="display:none">
+      <div class="sb-section-label">Management</div>
+      <div class="sb-link" onclick="openPanel('Analytics');closeSidebar()"><i class="fas fa-chart-bar"></i> Analytics</div>
+      <div class="sb-link" onclick="openPanel('ChangePassword');closeSidebar()"><i class="fas fa-key"></i> Change Password</div>
+    </div>
+
+    <!-- Admin only -->
+    <div id="sbAdmin" style="display:none">
+      <div class="sb-section-label">Admin</div>
+      <div class="sb-link" onclick="openPanel('UserManagement');closeSidebar()"><i class="fas fa-users"></i> User Management</div>
+      <div class="sb-link" onclick="openPanel('ChangePassword');closeSidebar()"><i class="fas fa-key"></i> Change Password</div>
+      <div class="sb-link" onclick="openDatabaseLink()"><i class="fas fa-database"></i> Access Database</div>
+    </div>
+
+    <!-- Logout -->
+    <div id="sbLogout" style="display:none;margin-top:16px">
+      <div class="sb-link danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── LOGIN MODAL ─── -->
+<div id="loginModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="hideLoginModal()"><i class="fas fa-times"></i></button>
+    <h2><i class="fas fa-leaf" style="color:var(--g700);font-size:1.4rem"></i> Staff Portal</h2>
+    <p class="modal-sub">Enter your credentials to access internal tools</p>
+    <div class="field">
+      <label>Employee ID</label>
+      <input type="text" id="loginId" placeholder="e.g. EMP001" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <p id="loginErr" style="color:var(--red);font-size:.82rem;margin-bottom:12px;display:none"></p>
+    <button class="submit-btn" id="loginBtn2" onclick="doLogin()">
+      <i class="fas fa-spinner spin"></i>
+      <span class="btn-text"><i class="fas fa-sign-in-alt"></i> Access Portal</span>
+    </button>
+  </div>
+</div>
+
+<!-- ─── MAIN OVERLAY (forms + panels) ─── -->
+<div id="mainOverlay">
+  <div class="ov-inner">
+    <div class="ov-top">
+      <button class="ov-back" onclick="closeOverlay()"><i class="fas fa-arrow-left"></i> Back</button>
+      <div class="ov-meta">Logged in as: <span id="ovUser">Guest</span></div>
+    </div>
+
+    <!-- ─── SALES / ORDER / FRANCHISE FORM ─── -->
+    <div id="panelOrderForm" style="display:none">
+      <div class="form-card">
+        <h2 class="form-title" id="orderFormTitle">New Order</h2>
+        <p class="form-sub" id="orderFormSub">Fill in the details below to submit your order.</p>
+
+        <!-- Customer fields -->
+        <div id="customerFields">
+          <div class="grid2">
+            <div class="field">
+              <label>Customer / Entity Name</label>
+              <input type="text" id="fEntityName" placeholder="Full name or company name">
+            </div>
+            <div id="franchiseTypeField" style="display:none" class="field">
+              <label>Franchise Type</label>
+              <select id="fFranchiseType">
+                <option>Cosmetics Store</option>
+                <option>Pharmacy</option>
+                <option>Retail Store</option>
+                <option>Distributor</option>
+              </select>
+            </div>
+          </div>
+          <div id="salesOnlyFields" style="display:none">
+            <div class="grid3">
+              <div class="field" id="fGenderField">
+                <label>Gender</label>
+                <select id="fGender">
+                  <option value="">Select</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
+              </div>
+              <div class="field" id="fAgeGroupField">
+                <label>Age Group</label>
+                <select id="fAgeGroup">
+                  <option>Under 18</option><option>19-25</option><option>26-30</option>
+                  <option>31-36</option><option>37-41</option><option>42-48</option>
+                  <option>49-56</option><option>57-65</option><option>66-72</option>
+                  <option>Above 75</option>
+                </select>
+              </div>
+              <div class="field" id="orderTypeField">
+                <label>Order Type</label>
+                <select id="fOrderType">
+                  <option>Walk-in</option><option>Phone</option><option>Online</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <!-- Order type shown alone for Franchise form -->
+          <div id="franchiseOrderTypeRow" style="display:none">
+            <div class="field" style="max-width:240px">
+              <label>Order Type</label>
+              <select id="fOrderTypeFranchise">
+                <option>Walk-in</option><option>Phone</option><option>Online</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label>Location</label>
+              <select id="fLocation">
+                <option>Addis Ababa</option>
+                <option>Other Regions</option>
+                <option>Abroad</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>City / Specific Area</label>
+              <input type="text" id="fCity" placeholder="e.g. Bole, Lideta...">
+            </div>
+          </div>
+          <div class="field">
+            <label>Phone Number</label>
+            <div class="phone-wrap">
+              
+              <input type="hidden" id="fCC" value="+251">
+              <button type="button" class="cc-btn" id="fCCBtn" onclick="ccToggle('fCC','fCCDrop','fCCBtn')">
+                <span class="cc-flag" id="fCCFlag">&#127466;&#127481;</span>
+                <span id="fCCCode">+251</span>
+                <span class="cc-arr">&#9660;</span>
+              </button>
+              <div class="cc-drop" id="fCCDrop">
+                <div class="cc-drop-search"><input type="text" placeholder="Search country…" oninput="ccSearch(this,'fCCDrop','fCC','fCCBtn')"></div>
+                <div class="cc-drop-list" id="fCCList"></div>
+              </div>
+              <input class="phone-num" type="tel" id="fPhone" placeholder="911 234 567">
+            </div>
+          </div>
+        </div>
+
+        <!-- Vendor fields -->
+        <div id="vendorFields" style="display:none">
+          <div class="grid2">
+            <div class="field">
+              <label>Vendor Name</label>
+              <input type="text" id="vEntityName" placeholder="Vendor / supplier name">
+            </div>
+            <div class="field">
+              <label>Vendor Telegram Username</label>
+              <input type="text" id="vTelegram" placeholder="@username or numeric chat ID" style="font-size:.88rem">
+              <small style="color:var(--muted);font-size:.75rem">Vendor must message your bot first to receive notifications</small>
+            </div>
+            <div class="field">
+              <label>Location</label>
+              <select id="vLocation">
+                <option>Addis Ababa</option><option>Other Regions</option><option>Abroad</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>City</label>
+              <input type="text" id="vCity" placeholder="City">
+            </div>
+            <div class="field">
+              <label>Phone</label>
+              <div class="phone-wrap">
+                
+                <input type="hidden" id="vCC" value="+251">
+                <button type="button" class="cc-btn" id="vCCBtn" onclick="ccToggle('vCC','vCCDrop','vCCBtn')">
+                  <span class="cc-flag" id="vCCFlag">&#127466;&#127481;</span>
+                  <span id="vCCCode">+251</span>
+                  <span class="cc-arr">&#9660;</span>
+                </button>
+                <div class="cc-drop" id="vCCDrop">
+                  <div class="cc-drop-search"><input type="text" placeholder="Search country…" oninput="ccSearch(this,'vCCDrop','vCC','vCCBtn')"></div>
+                  <div class="cc-drop-list" id="vCCList"></div>
+                </div>
+                                <input class="phone-num" type="tel" id="vPhone" placeholder="911 234 567">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stock Request fields -->
+        <div id="stockFields" style="display:none">
+          <div class="grid2">
+            <div class="field"><label>Item</label><input type="text" id="sItem" placeholder="e.g. Moringa Powder"></div>
+            <div class="field"><label>Package Size</label><input type="text" id="sPkgSize" placeholder="e.g. 500g"></div>
+            <div class="field"><label>Stock Remaining</label><input type="number" id="sRemaining" min="0" placeholder="0"></div>
+            <div class="field"><label>Quantity Needed</label><input type="number" id="sQtyNeeded" min="1" placeholder="1"></div>
+            <div class="field"><label>Needed By</label><input type="date" id="sDeliveryDate"></div>
+            <div class="field"><label>Requested By</label><input type="text" id="sRequestedBy" placeholder="Your name"></div>
+          </div>
+        </div>
+
+        <!-- Item rows -->
+        <div class="items-section" id="itemsSection">
+          <h4><i class="fas fa-boxes"></i> Item Details</h4>
+          <div id="itemsContainer"></div>
+          <button class="add-item-btn" onclick="addItemRow()"><i class="fas fa-plus"></i> Add Another Item</button>
+        </div>
+
+        <!-- Total: shown for Sales/Order, hidden for Franchise -->
+        <div class="total-box" id="totalBox" style="display:none">
+          Total: <span id="totalAmount">0.00</span> ETB
+        </div>
+        <!-- Hidden total that always holds the computed value for Franchise -->
+        <input type="hidden" id="hiddenTotal" value="0">
+
+        <div class="delivery-note" id="deliveryNote" style="display:none">
+          <strong>Delivery Fee (pre-payment required):</strong><br>
+          Addis Ababa: 150–200 ETB &nbsp;|&nbsp; Outside AA: 300 ETB
+        </div>
+
+        <div class="field" id="fileSection" style="display:none">
+          <label>Attachment (Receipt / ID)</label>
+          <div class="file-upload" onclick="document.getElementById('fileInp').click()">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p id="fileLabel">Click to upload (JPG, PNG, PDF)</p>
+            <input type="file" id="fileInp" accept="image/*,.pdf" onchange="onFileChange(this)">
+          </div>
+        </div>
+
+        <div class="submit-row">
+          <button class="submit-btn" id="orderSubmitBtn" onclick="submitOrderForm()">
+            <i class="fas fa-spinner spin"></i>
+            <span class="btn-text"><i class="fas fa-paper-plane"></i> Submit</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── CHANGE PASSWORD PANEL ─── -->
+    <div id="panelChangePassword" style="display:none">
+      <div class="cp-card">
+        <h3><i class="fas fa-key" style="color:var(--g700)"></i> Change Password</h3>
+        <p>Update an employee's login password.</p>
+        <div id="cpEmpIdField" class="field" style="display:none">
+          <label>Employee ID (admin: change anyone's password)</label>
+          <input type="text" id="cpEmpId" placeholder="e.g. EMP002">
+        </div>
+        <div class="field">
+          <label>New Password</label>
+          <input type="password" id="cpNewPass" placeholder="Minimum 4 characters">
+        </div>
+        <div class="field">
+          <label>Confirm Password</label>
+          <input type="password" id="cpConfirmPass" placeholder="Re-enter new password">
+        </div>
+        <div class="submit-row">
+          <button class="submit-btn" onclick="submitChangePassword()">
+            <i class="fas fa-spinner spin"></i>
+            <span class="btn-text"><i class="fas fa-save"></i> Update Password</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── ORDER TRACKING PANEL ─── -->
+    <div id="panelTracking" style="display:none">
+      <div class="form-card">
+        <h2 class="form-title"><i class="fas fa-search" style="color:var(--g700)"></i> Order Tracking</h2>
+        <p class="form-sub">Search and manage all orders in real time.</p>
+
+        <div class="track-toolbar">
+          <input type="text" id="trSearch" placeholder="Search by name, phone, order ID..." oninput="filterOrders()">
+          <select id="trStatus" onchange="filterOrders()">
+            <option value="">All Statuses</option>
+            <option>Pending</option><option>Confirmed</option><option>Packed</option>
+            <option>In Transit</option><option>Delivered</option><option>Cancelled</option>
+          </select>
+          <select id="trSource" onchange="filterOrders()">
+            <option value="">All Sources</option>
+            <option value="Sales_DB">Sales</option>
+            <option value="Franchise_DB">Franchise / Bulk</option>
+          </select>
+          <input type="date" id="trDateFrom" onchange="filterOrders()">
+          <input type="date" id="trDateTo" onchange="filterOrders()">
+          <button class="btn btn-ghost btn-sm" onclick="clearTrackFilters()"><i class="fas fa-times"></i> Clear</button>
+          <button class="btn btn-primary btn-sm" onclick="exportData()"><i class="fas fa-download"></i> Export</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data-table" id="trackTable">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Source</th>
+                <th>Customer</th>
+                <th>Phone</th>
+                <th>Items</th>
+                <th>Total (ETB)</th>
+                <th>Delivery</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="trackBody"></tbody>
+          </table>
+          <div class="empty-state" id="trackEmpty" style="display:none">
+            <i class="fas fa-inbox"></i>
+            <p>No orders found</p>
+          </div>
+          <div class="page-loader" id="trackLoader">
+            <i class="fas fa-spinner"></i>
+          </div>
+        </div>
+        <div class="pagination" id="trackPagination" style="display:none">
+          <span id="paginationInfo"></span>
+          <div class="page-btns" id="pageButtons"></div>
+        </div>
+
+        <!-- Order detail + status editor -->
+        <div class="order-detail-panel" id="orderDetailPanel">
+          <h4 style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1rem;margin-bottom:16px;color:var(--g900)">
+            <i class="fas fa-edit" style="color:var(--g700)"></i> Update Order Status
+            <button onclick="closeOrderDetail()" style="float:right;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem"><i class="fas fa-times"></i></button>
+          </h4>
+          <div class="detail-grid" id="detailGrid"></div>
+          <!-- ── STATUS UPDATE ── -->
+          <div class="grid2">
+            <div class="field">
+              <label>New Status</label>
+              <select id="newStatusSel">
+                <option>Pending</option><option>Confirmed</option><option>Packed</option>
+                <option>In Transit</option><option>Delivered</option><option>Cancelled</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Notes</label>
+              <input type="text" id="statusNotes" placeholder="Optional notes">
+            </div>
+          </div>
+          <div class="submit-row" style="margin-top:0;gap:10px;flex-wrap:wrap">
+            <button class="submit-btn" style="max-width:240px" onclick="applyStatusUpdate()">
+              <i class="fas fa-spinner spin"></i>
+              <span class="btn-text"><i class="fas fa-check"></i> Update Status</span>
+            </button>
+            <button onclick="printOrder()" style="max-width:180px;padding:12px 20px;background:#fff;border:1.5px solid var(--g700);color:var(--g700);border-radius:var(--rad2);cursor:pointer;font-weight:600;font-size:.85rem;display:flex;align-items:center;gap:7px">
+              <i class="fas fa-print"></i> Print Order
+            </button>
+          </div>
+
+          <!-- ── MODIFY ITEMS ── -->
+          <div class="mod-section" id="modSection">
+            <h5><i class="fas fa-boxes" style="color:var(--g700)"></i> Modify Order Items
+              <span style="font-size:.76rem;font-weight:500;color:var(--muted)">(change qty, remove, or add products)</span>
+            </h5>
+            <div id="modItemsContainer"></div>
+            <button onclick="modAddItem()" class="add-item-btn" style="margin-top:6px">
+              <i class="fas fa-plus"></i> Add Another Product
+            </button>
+            <div class="submit-row" style="margin-top:14px;gap:10px">
+              <button class="submit-btn" style="max-width:260px;background:#065f46" onclick="applyItemModification()">
+                <i class="fas fa-spinner spin"></i>
+                <span class="btn-text"><i class="fas fa-save"></i> Save Item Changes</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── ANALYTICS PANEL ─── -->
+    <div id="panelAnalytics" style="display:none">
+      <div class="form-card">
+        <h2 class="form-title"><i class="fas fa-chart-bar" style="color:var(--g700)"></i> Analytics Dashboard</h2>
+        <p class="form-sub">Real-time insights from sales, franchise, vendor &amp; packaging data.</p>
+        <div class="page-loader" id="analyticsLoader"><i class="fas fa-spinner"></i></div>
+        <div id="analyticsContent" style="display:none">
+          <!-- KPI row -->
+          <div class="analytics-grid" id="kpiGrid"></div>
+          <!-- Revenue & Profit -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+            <div class="chart-section">
+              <h4><i class="fas fa-chart-line" style="color:var(--g700)"></i> Revenue by Month</h4>
+              <div class="bar-chart" id="revenueByMonthChart"></div>
+            </div>
+            <div class="chart-section">
+              <h4><i class="fas fa-coins" style="color:var(--g700)"></i> Profit by Month (Revenue − Vendor Cost)</h4>
+              <div class="bar-chart" id="profitByMonthChart"></div>
+            </div>
+          </div>
+          <!-- Products -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+            <div class="chart-section">
+              <h4><i class="fas fa-trophy" style="color:var(--g700)"></i> Best Selling Products</h4>
+              <div class="bar-chart" id="bestProductsChart"></div>
+            </div>
+            <div class="chart-section">
+              <h4><i class="fas fa-arrow-down" style="color:var(--red)"></i> Lowest Selling Products</h4>
+              <div class="bar-chart" id="worstProductsChart"></div>
+            </div>
+          </div>
+          <!-- Employee & Status -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+            <div class="chart-section">
+              <h4><i class="fas fa-user-tie" style="color:var(--g700)"></i> Orders per Employee</h4>
+              <div class="bar-chart" id="employeeChart"></div>
+            </div>
+            <div class="chart-section">
+              <h4><i class="fas fa-circle-notch" style="color:var(--g700)"></i> Orders by Status</h4>
+              <div class="bar-chart" id="statusChart"></div>
+            </div>
+          </div>
+          <!-- Demographics & Location -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px">
+            <div class="chart-section">
+              <h4><i class="fas fa-venus-mars" style="color:var(--g700)"></i> Gender</h4>
+              <div class="bar-chart" id="genderChart"></div>
+            </div>
+            <div class="chart-section">
+              <h4><i class="fas fa-users" style="color:var(--g700)"></i> Age Group</h4>
+              <div class="bar-chart" id="ageGroupChart"></div>
+            </div>
+            <div class="chart-section">
+              <h4><i class="fas fa-map-marker-alt" style="color:var(--g700)"></i> Region</h4>
+              <div class="bar-chart" id="regionChart"></div>
+            </div>
+          </div>
+          <!-- Location & YoY -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+            <div class="chart-section">
+              <h4><i class="fas fa-city" style="color:var(--g700)"></i> Top Cities</h4>
+              <div class="bar-chart" id="locationChart"></div>
+            </div>
+            <div class="chart-section">
+              <h4><i class="fas fa-calendar-alt" style="color:var(--g700)"></i> Year-over-Year Orders</h4>
+              <div class="bar-chart" id="yoyChart"></div>
+            </div>
+          </div>
+          <!-- Stock movement -->
+          <div class="chart-section" style="margin-bottom:20px">
+            <h4><i class="fas fa-boxes" style="color:var(--g700)"></i> Stock Movement (Packaging)</h4>
+            <div class="bar-chart" id="stockChart"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── USER MANAGEMENT PANEL ─── -->
+    <div id="panelUserManagement" style="display:none">
+      <div class="form-card">
+        <h2 class="form-title"><i class="fas fa-users" style="color:var(--g700)"></i> User Management</h2>
+        <p class="form-sub">Add, view, and remove staff accounts.</p>
+        <div class="page-loader" id="usersLoader"><i class="fas fa-spinner"></i></div>
+        <div id="usersContent" style="display:none">
+          <div class="table-wrap">
+            <table class="user-table">
+              <thead>
+                <tr>
+                  <th>Employee ID</th>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody"></tbody>
+            </table>
+          </div>
+          <div class="add-user-form">
+            <h4><i class="fas fa-user-plus" style="color:var(--g700)"></i> Add New User</h4>
+            <div class="grid2">
+              <div class="field"><label>Employee ID</label><input type="text" id="nuId" placeholder="EMP003"></div>
+              <div class="field"><label>Full Name</label><input type="text" id="nuName" placeholder="Full name"></div>
+              <div class="field"><label>Password</label><input type="password" id="nuPass" placeholder="Temporary password"></div>
+              <div class="field"><label>Role</label>
+                <select id="nuRole">
+                  <option value="staff">Staff</option>
+                  <option value="manager">Manager</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="addNewUser()"><i class="fas fa-plus"></i> Add User</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /ov-inner -->
+</div><!-- /mainOverlay -->
+
+<!-- ─── TOAST CONTAINER ─── -->
+<div id="toastContainer"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+//  GLOBAL STATE
+// ═══════════════════════════════════════════════════════════════════
+var APP = {
+  user: { id: 'GUEST', name: 'Guest', role: 'guest' },
+  currentForm: '',
+  orders: [],
+  filteredOrders: [],
+  page: 1,
+  pageSize: 20,
+  selectedOrderId: null
+};
+
+// ═══════════════════════════════════════════════════════════════════
+//  FIXED GAS RUN WRAPPER – with safe function check
+// ═══════════════════════════════════════════════════════════════════
+function gasRun(method) {
+  var extraArgs = Array.prototype.slice.call(arguments, 1);
+  return new Promise(function(resolve, reject) {
+    var gsr = (typeof google !== 'undefined' && google.script && google.script.run)
+              ? google.script.run : null;
+    if (!gsr) {
+      console.warn('google.script.run not available – using fallback');
+      // Enhanced fallback for development/testing
+      if (method === 'validateCredentials') {
+        var id = extraArgs[0] || '';
+        var pw = extraArgs[1] || '';
+        if (id && pw) {
+          resolve({ success: true, userId: id, name: id + ' (Test)', role: 'admin' });
+        } else {
+          resolve({ success: false, message: 'ID and password required' });
+        }
+      } else if (method === 'processSubmission') {
+        setTimeout(function() { resolve({ success: true, message: 'Order submitted (dev mode)', orderId: 'ORD-TEST-001' }); }, 800);
+      } else {
+        setTimeout(function() { resolve({ success: true, message: 'Done (dev mode)', rows: [], data: {} }); }, 600);
+      }
+      return;
+    }
+    // ── FIX: withSuccessHandler belongs to the RUNNER (gsr), not to fn.
+    // ── CRITICAL: GAS bridge methods do NOT support .apply() or .call() in
+    //    NATIVE sandbox — calling .apply() causes args to be dropped → server
+    //    receives undefined → returns null → successHandler(null) → TypeError.
+    //    Must call the method directly with explicit positional arguments.
+    if (typeof gsr[method] !== 'function') {
+      reject(new Error('GAS method not found: ' + method));
+      return;
+    }
+    // CRITICAL: call DIRECTLY on the runner — do NOT extract fn = r[method]
+    // because GAS bridge objects use internal this-binding; extracting loses context
+    // and causes the success handler to receive null.
+    var safeResolve = function(result) {
+      // GAS can call success handler with null on timeout/quota — surface as error
+      if (result === null || result === undefined) {
+        reject(new Error('Server returned empty response. Check GAS logs.'));
+      } else {
+        resolve(result);
+      }
+    };
+    var r = gsr.withSuccessHandler(safeResolve).withFailureHandler(reject);
+    var a = extraArgs;
+    if      (a.length === 0) r[method]();
+    else if (a.length === 1) r[method](a[0]);
+    else if (a.length === 2) r[method](a[0], a[1]);
+    else if (a.length === 3) r[method](a[0], a[1], a[2]);
+    else if (a.length === 4) r[method](a[0], a[1], a[2], a[3]);
+    else if (a.length === 5) r[method](a[0], a[1], a[2], a[3], a[4]);
+    else                     r[method](a[0], a[1], a[2], a[3], a[4], a[5]);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  TOAST NOTIFICATIONS
+// ═══════════════════════════════════════════════════════════════════
+function toast(msg, type) {
+  type = type || 'success';
+  var icons = { success: 'fa-check-circle', error: 'fa-times-circle', warn: 'fa-exclamation-triangle' };
+  var c = document.getElementById('toastContainer');
+  var t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = '<i class="fas ' + icons[type] + '"></i>' + msg;
+  c.appendChild(t);
+  setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 4500);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  LOADING BUTTON HELPERS
+// ═══════════════════════════════════════════════════════════════════
+function btnLoading(btn, state) {
+  if (!btn) return;
+  if (state) { btn.classList.add('loading'); btn.disabled = true; }
+  else { btn.classList.remove('loading'); btn.disabled = false; }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  LOGIN / LOGOUT
+// ═══════════════════════════════════════════════════════════════════
+function showLoginModal() {
+  var m = document.getElementById('loginModal');
+  m.className = 'show';
+  document.getElementById('loginId').focus();
+  document.getElementById('loginErr').style.display = 'none';
+}
+
+function hideLoginModal() {
+  document.getElementById('loginModal').className = '';
+}
+
+function doLogin() {
+  var uid  = document.getElementById('loginId').value.trim();
+  var pass = document.getElementById('loginPass').value;
+  if (!uid || !pass) { showLoginErr('Enter ID and password.'); return; }
+
+  var btn = document.getElementById('loginBtn2');
+  btnLoading(btn, true);
+
+  gasRun('validateCredentials', uid, pass).then(function(r) {
+    btnLoading(btn, false);
+    if (r && r.success) {
+      APP.user = { id: r.userId, name: r.name || r.userId, role: r.role };
+      hideLoginModal();
+      applyUserSession();
+      toast('Welcome, ' + APP.user.name + '!');
+    } else {
+      showLoginErr(r.message || 'Invalid credentials.');
+    }
+  }).catch(function(e) {
+    btnLoading(btn, false);
+    showLoginErr('Login error: ' + (e.message || e));
+  });
+}
+
+function showLoginErr(msg) {
+  var el = document.getElementById('loginErr');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function logout() {
+  APP.user = { id: 'GUEST', name: 'Guest', role: 'guest' };
+  applyUserSession();
+  closeSidebar();
+  toast('Logged out.');
+}
+
+function applyUserSession() {
+  var role = APP.user.role;
+  var name = APP.user.name;
+
+  // Nav badge
+  var badge = document.getElementById('navUserBadge');
+  var navName = document.getElementById('navUserName');
+  var loginBtn = document.getElementById('loginBtn');
+  var menuBtn = document.getElementById('menuBtn');
+
+  if (role !== 'guest') {
+    badge.className = 'nav-user-badge show';
+    navName.textContent = name + ' (' + role + ')';
+    loginBtn.style.display = 'none';
+    menuBtn.style.display = 'inline-flex';
+  } else {
+    badge.className = 'nav-user-badge';
+    loginBtn.style.display = 'inline-flex';
+    menuBtn.style.display = 'none';
+  }
+
+  // Sidebar
+  document.getElementById('sbAvatar').textContent = name.charAt(0).toUpperCase();
+  document.getElementById('sbName').textContent = name;
+  document.getElementById('sbRole').textContent = role.charAt(0).toUpperCase() + role.slice(1);
+  document.getElementById('ovUser').textContent = name;
+
+  var show = function(id) { document.getElementById(id).style.display = 'block'; };
+  var hide = function(id) { document.getElementById(id).style.display = 'none'; };
+
+  if (role !== 'guest') { show('sbStaff'); show('sbLogout'); } else { hide('sbStaff'); hide('sbLogout'); }
+  // Manager is now mapped to admin role — both get full access
+  if (role === 'admin') show('sbManager'); else hide('sbManager');
+  if (role === 'admin') show('sbAdmin'); else hide('sbAdmin');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  SIDEBAR
+// ═══════════════════════════════════════════════════════════════════
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sbOverlay').classList.add('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sbOverlay').classList.remove('show');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  OVERLAY (PANELS)
+// ═══════════════════════════════════════════════════════════════════
+function showOverlay() { document.getElementById('mainOverlay').classList.add('show'); }
+function closeOverlay() { document.getElementById('mainOverlay').classList.remove('show'); }
+
+function hideAllPanels() {
+  var panels = ['panelOrderForm','panelChangePassword','panelTracking','panelAnalytics','panelUserManagement'];
+  for (var i = 0; i < panels.length; i++)
+    document.getElementById(panels[i]).style.display = 'none';
+}
+
+function openPanel(name) {
+  hideAllPanels();
+  // Role checks
+  var role = APP.user.role;
+  if (name === 'Tracking' && role === 'guest') { toast('Login required to view orders.', 'warn'); return; }
+  if (name === 'Analytics' && role !== 'admin') { toast('Manager or Admin access required.', 'warn'); return; }
+  if (name === 'UserManagement' && role !== 'admin') { toast('Admin or Manager access required.', 'warn'); return; }
+  if (name === 'ChangePassword' && role === 'guest') { toast('Login required.', 'warn'); return; }
+
+  var panelId = 'panel' + name;
+  var el = document.getElementById(panelId);
+  if (el) el.style.display = 'block';
+  showOverlay();
+
+  // Lazy load data
+  if (name === 'Tracking') loadOrders();
+  if (name === 'Analytics') loadAnalytics();
+  if (name === 'UserManagement') loadUsers();
+  if (name === 'ChangePassword') initChangePassword();
+}
+
+function openDatabaseLink() {
+  closeSidebar();
+  window.open('https://docs.google.com/spreadsheets/d/1D3DqTKPgRtdw1TEfa_ZYg-sYa1i326TgI4Iek3evE8s/edit?gid=971732794#gid=971732794', '_blank');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  PRODUCT CATALOG (build cards via DOM – avoids template literal HTML issue)
+// ═══════════════════════════════════════════════════════════════════
+var PRODUCTS = [
+  { id:1, name:'Moringa Powder 1kg',           price:1100, img:'1qAa9yMd_c6A8tDPPkwugj2Xr0m1vRoEI', desc:'Rich in vitamins and minerals. Immune & bone health support.', tag:'Bestseller' },
+  { id:2, name:'Ashwagandha Powder 250g',       price:2500, img:'1Fdympu5y-nb5OJ56QJ_lBCq4MCyT__cz', desc:'Ayurvedic adaptogen for stress relief, better sleep & energy.' },
+  { id:3, name:'Qasil Powder 200g',             price:450,  img:'1guLv710u9pk2pi3JKZBYQkoSoC0Ohh5f', desc:'Natural skincare from Gob tree. Cleanses, exfoliates & hydrates.' },
+  { id:4, name:'Hibiscus Dry Leaf 100g',        price:500, img:'1I1VyxYbV5rmI957tfyaxabCQ8ORV1NZI', desc:'Antioxidant-rich flowers for heart health & refreshing teas.' },
+  { id:5, name:'Shilajit Gummies 30ct',         price:4000, img:'19CZtK5fSDp6NScMF5IReDTgFb2iRnCvc', desc:'Himalayan shilajit in convenient gummies. Rejuvenating energy.' },
+  { id:6, name:'Shilajit Capsules 60ct',        price:4500, img:'1lArtvTvqVo0iueRzUQgck5rT-bIWUNOP', desc:'Pure Himalayan shilajit capsules for stamina & mental clarity.' },
+  { id:7, name:'Ashwagandha Tablets (Himalayan) 60ct', price:2500, img:'1fmA0K6RhwT6D4G-cDX8hrl6MTQ9nVurx', desc:'Potent adaptogen. Helps cope with daily stress, promotes calm.' },
+  { id:8, name:'Himalayan Shilajit Jell 20g',  price:5000, img:'1IPiqqpge_KXwx7PFSRMmmzZs_OthWqOJ', desc:'Concentrated shilajit resin. Centuries-old Himalayan remedy.' },
+  { id:9, name:'Kerbea Powder & Raw 100g',      price:800,  img:'15SJgOHtZV8tcaUBSbSYBjHLga13Y2SOD', desc:'Anti-inflammatory myrrh resin. Oral health & antimicrobial.' },
+  { id:10,name:'Chia Seed 250g',                 price:800, img:'1GaKPf-Ng4P4j2JWNnA9tpx7k2dTONKYf', desc:'Omega-3 rich seeds. Digestive health, heart health & weight management.' },
+  { id:11,name:'Chebe Powder 100g',             price:1000, img:'1VBCztO5qagc8j0a8KJlUkI25UNNXba9D', desc:'Traditional Chadian hair treatment. Moisture, strength & retention.' },
+  { id:12,name:'Turmeric (Ered) Powder 200g',   price:450,  img:'1YAj9DDzVc7Ypl-b-7GfGkNlTteDJSKFt', desc:'Golden anti-inflammatory spice. Curcumin for joints & antioxidants.' }
+];
+
+var PRICE_MAP = {
+  'Kerbe Powder': { '100 g': 800 },
+  'Kerbe Raw': { '100 g': 800 },
+  'Ashwagandha Powder': { '100 g': 1000, '220 g': 2000, '250 g': 2500 },
+  'Ashwagandha Tablet (Himalayan)': { '60 capsules': 2500, '120 capsules': 4500 },
+  'Chebe Powder': { '100 g': 1000 },
+  'Chia Seed': { '250 g': 800, '1 kg': 3000 },
+  'Cinnamon': { '100 g': 600 },
+  'Coffee Bean': { '500 g': 800 },
+  'Turmeric Powder': { '200 g': 450 },
+  'Hibiscus Dry Leaf': { '100 g': 500, '200 g': 1000 },
+  'Qasil Powder': { '200 g': 450 },
+  'Moringa Powder': { '200 g': 350, '500 g': 750, '1 kg': 1100 },
+  'Moringa Seed': { '200 g': 450, '500 g': 1000 },
+  'Shilajit Capsules': { '60 capsules': 4500 },
+  'Shilajit Gummies': { '30 gummies': 4000, '60 gummies': 4000 },
+  'Himalayan Shilajit Jell': { '1 jar (20g)': 5000 }
+};
+
+function buildProductCards() {
+  var grid = document.getElementById('productsGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  PRODUCTS.forEach(function(p) {
+    var card = document.createElement('div');
+    card.className = 'pcard';
+
+    var img = document.createElement('img');
+    img.className = 'pcard-img';
+    img.src = 'https://drive.google.com/thumbnail?id=' + p.img + '&sz=w500';
+    img.alt = p.name;
+    img.loading = 'lazy';
+    img.onerror = function() { this.src = 'https://placehold.co/500x220/c8e6c9/2e7d32?text=' + encodeURIComponent(p.name); };
+
+    var body = document.createElement('div');
+    body.className = 'pcard-body';
+
+    var nameEl = document.createElement('div');
+    nameEl.className = 'pcard-name';
+    nameEl.textContent = p.name;
+
+    var priceEl = document.createElement('div');
+    priceEl.className = 'pcard-price';
+    priceEl.textContent = p.price.toLocaleString() + ' ETB';
+
+    var desc = document.createElement('div');
+    desc.style.cssText = 'font-size:.82rem;color:var(--muted);line-height:1.5;margin-bottom:14px;';
+    desc.textContent = p.desc;
+
+    var actions = document.createElement('div');
+    actions.className = 'pcard-actions';
+
+    var buyBtn = document.createElement('button');
+    buyBtn.className = 'btn btn-primary';
+    buyBtn.style.cssText = 'flex:1;justify-content:center;padding:10px;font-size:.84rem;';
+    buyBtn.innerHTML = '<i class="fas fa-shopping-cart"></i> Order';
+    (function(product) {
+      buyBtn.onclick = function() { openOrderForm('Sales', product.name); };
+    })(p);
+
+    if (p.tag) {
+      var badge = document.createElement('div');
+      badge.style.cssText = 'position:absolute;top:12px;left:12px;background:var(--g700);color:#fff;padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:800;';
+      badge.textContent = p.tag;
+      card.appendChild(badge);
+    }
+
+    actions.appendChild(buyBtn);
+    body.appendChild(nameEl);
+    body.appendChild(priceEl);
+    body.appendChild(desc);
+    body.appendChild(actions);
+    card.appendChild(img);
+    card.appendChild(body);
+    grid.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  ORDER FORM
+// ═══════════════════════════════════════════════════════════════════
+function openOrderForm(formType, presetItem) {
+  hideAllPanels();
+  var role = APP.user.role;
+
+  // FIX: Franchise removed from staffForms – guests can now submit franchise orders.
+  // Vendor/Packaging/StockRequest remain staff-only (internal operational forms).
+  var staffForms = ['Order','Vendor','Packaging','StockRequest'];
+
+  APP.currentForm = formType;
+  document.getElementById('panelOrderForm').style.display = 'block';
+
+  // Titles
+  var titles = {
+    Sales: 'New Sales Order', Order: 'Bulk / Retail Order',
+    Franchise: 'Franchise Order', Vendor: 'Vendor Purchase',
+    Packaging: 'Packaging Log', StockRequest: 'Stock Request'
+  };
+  var subs = {
+    Sales: 'Place a new customer order.',
+    Order: 'Bulk or retail order from a distributor.',
+    Franchise: 'Order for franchise partner.',
+    Vendor: 'Record incoming vendor / supplier purchase.',
+    Packaging: 'Log newly packaged inventory.',
+    StockRequest: 'Submit a low-stock alert.'
+  };
+  document.getElementById('orderFormTitle').textContent = titles[formType] || formType;
+  document.getElementById('orderFormSub').textContent = subs[formType] || '';
+
+  // Show/hide sections
+  var hide = function(id) { var e = document.getElementById(id); if(e) e.style.display='none'; };
+  var show = function(id) { var e = document.getElementById(id); if(e) e.style.display='block'; };
+
+  hide('customerFields'); hide('vendorFields'); hide('stockFields');
+  hide('salesOnlyFields'); hide('franchiseTypeField'); hide('franchiseOrderTypeRow'); hide('itemsSection');
+  hide('totalBox'); hide('deliveryNote'); hide('fileSection');
+
+  document.getElementById('itemsContainer').innerHTML = '';
+
+  if (formType === 'Sales' || formType === 'Order') {
+    show('customerFields');
+    show('salesOnlyFields');
+    show('itemsSection');
+    show('totalBox');
+    show('deliveryNote');
+    // Guests: force Online order type
+    if (role === 'guest') {
+      var otSel = document.getElementById('fOrderType');
+      if (otSel) { otSel.value = 'Online'; otSel.disabled = true; }
+    } else {
+      var otSel2 = document.getElementById('fOrderType');
+      if (otSel2) { otSel2.disabled = false; }
+    }
+  } else if (formType === 'Franchise') {
+    show('customerFields');
+    show('franchiseTypeField');
+    show('franchiseOrderTypeRow');   // ← order type for franchise
+    show('itemsSection');
+    // totalBox intentionally hidden for Franchise (price not shown to customer)
+    show('deliveryNote');
+    // Guests: force Online order type (same as Sales)
+    var ftSel = document.getElementById('fOrderTypeFranchise');
+    if (ftSel) { ftSel.value = 'Online'; ftSel.disabled = (role === 'guest'); }
+  } else if (formType === 'Vendor') {
+    show('vendorFields');
+    show('itemsSection');
+  } else if (formType === 'Packaging') {
+    show('itemsSection');
+  } else if (formType === 'StockRequest') {
+    show('stockFields');
+  }
+
+  // File upload – staff only
+  if (role !== 'guest' && formType !== 'StockRequest') {
+    show('fileSection');
+  }
+
+  // Add first item row
+  if (['Sales','Order','Franchise','Vendor','Packaging'].indexOf(formType) > -1) {
+    addItemRow(presetItem);
+  }
+
+  showOverlay();
+  window.scrollTo(0, 0);
+}
+
+function addItemRow(presetItem) {
+  var container = document.getElementById('itemsContainer');
+  var form = APP.currentForm;
+  var row = document.createElement('div');
+  row.className = 'item-row';
+
+  var rowContent = document.createElement('div');
+  rowContent.className = 'item-row-grid';
+
+  var removeBtn = document.createElement('button');
+  removeBtn.className = 'item-remove';
+  removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+  removeBtn.onclick = function() { container.removeChild(row); calcTotal(); };
+
+  if (form === 'Packaging') {
+    rowContent.style.gridTemplateColumns = '2fr 1fr 0.7fr 1fr 1.1fr';
+    rowContent.appendChild(makeField('Item Source', makeInput('text', 'itemName[]', 'Source / batch name')));
+    rowContent.appendChild(makeField('Pkg Size', makeInput('text', 'pkgSize[]', '500g')));
+    rowContent.appendChild(makeField('Qty Created', makeInput('number', 'quantity[]', '0')));
+    rowContent.appendChild(makeField('Cost (ETB)', makeInput('number', 'packagingCost[]', '0')));
+    rowContent.appendChild(makeField('Available Date', makeInput('date', 'availDate[]', '')));
+  } else if (form === 'Vendor') {
+    // FIX: Item, Amount, Price, Delivery Date only (Qty removed per requirements)
+    rowContent.style.gridTemplateColumns = '2fr 1fr 1fr 1.2fr';
+    rowContent.appendChild(makeField('Item', makeInput('text', 'vendorItem[]', 'Item name')));
+    rowContent.appendChild(makeField('Amount', makeInput('text', 'vendorAmount[]', 'e.g. 50kg')));
+    rowContent.appendChild(makeField('Price (ETB)', makeInput('number', 'vendorPrice[]', '0')));
+    rowContent.appendChild(makeField('Delivery Date', makeInput('date', 'vendorDeliveryDate[]', '')));
+  } else {
+    rowContent.style.gridTemplateColumns = '2fr 1.2fr 0.8fr 1.2fr';
+
+    // Item select
+    var itemSel = document.createElement('select');
+    itemSel.name = 'itemName[]';
+    var itemNames2 = Object.keys(PRICE_MAP);
+    var defaultOpt = document.createElement('option');
+    defaultOpt.value = '';
+    defaultOpt.textContent = 'Select item...';
+    itemSel.appendChild(defaultOpt);
+    itemNames2.forEach(function(n) {
+      var o = document.createElement('option');
+      o.value = n; o.textContent = n;
+      if (presetItem && n.toLowerCase().indexOf(presetItem.toLowerCase()) > -1) o.selected = true;
+      itemSel.appendChild(o);
+    });
+
+    // Package select
+    var pkgSel = document.createElement('select');
+    pkgSel.name = 'packageSize[]';
+
+    function updatePkgSizes(selItem) {
+      pkgSel.innerHTML = '';
+      var sizes = selItem && PRICE_MAP[selItem] ? Object.keys(PRICE_MAP[selItem]) : ['100 g','200 g','250 g','500 g','1 kg'];
+      sizes.forEach(function(s) {
+        var o = document.createElement('option');
+        o.value = s; o.textContent = s;
+        pkgSel.appendChild(o);
+      });
+      calcTotal();
+    }
+
+    itemSel.onchange = function() { updatePkgSizes(this.value); };
+    pkgSel.onchange = function() { calcTotal(); };
+
+    var qtyInp = document.createElement('input');
+    qtyInp.type = 'number'; qtyInp.name = 'quantity[]';
+    qtyInp.min = '1'; qtyInp.placeholder = '1';
+    qtyInp.oninput = function() { calcTotal(); };
+
+    var dlvInp = document.createElement('input');
+    dlvInp.type = 'date'; dlvInp.name = 'deliveryDate[]';
+
+    rowContent.appendChild(makeField('Item', itemSel));
+    rowContent.appendChild(makeField('Package Size', pkgSel));
+    rowContent.appendChild(makeField('Qty', qtyInp));
+    rowContent.appendChild(makeField('Delivery Date', dlvInp));
+
+    if (presetItem) updatePkgSizes(itemSel.value);
+  }
+
+  row.appendChild(removeBtn);
+  row.appendChild(rowContent);
+  container.appendChild(row);
+}
+
+function makeField(labelText, inputEl) {
+  var wrap = document.createElement('div');
+  wrap.className = 'field';
+  var lbl = document.createElement('label');
+  lbl.textContent = labelText;
+  wrap.appendChild(lbl);
+  wrap.appendChild(inputEl);
+  return wrap;
+}
+
+function makeInput(type, name, placeholder) {
+  var inp = document.createElement('input');
+  inp.type = type; inp.name = name;
+  if (type === 'number') { inp.min = '0'; inp.placeholder = placeholder || '0'; }
+  else { inp.placeholder = placeholder || ''; }
+  if (type === 'date') inp.placeholder = '';
+  return inp;
+}
+
+function calcTotal() {
+  if (APP.currentForm !== 'Sales' && APP.currentForm !== 'Franchise' && APP.currentForm !== 'Order') return;
+  var total = 0;
+  var rows = document.querySelectorAll('.item-row');
+  rows.forEach(function(row) {
+    var itemSel = row.querySelector('select[name="itemName[]"]');
+    var pkgSel  = row.querySelector('select[name="packageSize[]"]');
+    var qtyInp  = row.querySelector('input[name="quantity[]"]');
+    if (!itemSel || !pkgSel || !qtyInp) return;
+    var item = itemSel.value;
+    var pkg  = pkgSel.value;
+    var qty  = parseFloat(qtyInp.value) || 0;
+    if (item && pkg && qty > 0 && PRICE_MAP[item] && PRICE_MAP[item][pkg])
+      total += qty * PRICE_MAP[item][pkg];
+  });
+  var _ta = document.getElementById('totalAmount');
+  var _ht = document.getElementById('hiddenTotal');
+  if (_ta) _ta.textContent = total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  if (_ht) _ht.value = total; // always store for Franchise hidden submission
+}
+
+function onFileChange(inp) {
+  var lbl = document.getElementById('fileLabel');
+  lbl.textContent = inp.files[0] ? inp.files[0].name : 'Click to upload';
+}
+
+// ─── SUBMIT ORDER ───
+function submitOrderForm() {
+  var btn = document.getElementById('orderSubmitBtn');
+  var form = APP.currentForm;
+
+  var data = {};
+  data.formType   = form;
+  data.employeeId = APP.user.id;
+  data.userRole   = APP.user.role;
+
+  // Collect standard fields
+  function val(id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; }
+
+  if (form === 'Sales' || form === 'Order' || form === 'Franchise') {
+    data.entityName    = val('fEntityName');
+    data.gender        = val('fGender');
+    data.ageGroup      = val('fAgeGroup');
+    data.location      = val('fLocation');
+    data.city          = val('fCity');
+    data.phoneNumber   = val('fCC') + val('fPhone');
+    // Derive country name from selected phone country code
+    var _ccCode = val('fCC');
+    var _ccEntry = _CC ? _CC.filter(function(c){return c.c===_ccCode;})[0] : null;
+    data.country = _ccEntry ? _ccEntry.f+' '+_ccEntry.n : _ccCode;
+    // Sales uses fOrderType; Franchise uses its own select
+    data.orderType     = form === 'Franchise' ? val('fOrderTypeFranchise') : val('fOrderType');
+    data.franchiseType = val('fFranchiseType');
+    if (!data.entityName) { toast('Please enter customer name.', 'warn'); return; }
+    if (!val('fPhone'))   { toast('Please enter phone number.', 'warn'); return; }
+  }
+
+  if (form === 'Vendor') {
+    data.entityName     = val('vEntityName');
+    data.vendorTelegram = val('vTelegram');  // @username or numeric chat ID
+    data.location       = val('vLocation');
+    data.city           = val('vCity');
+    data.phoneNumber    = val('vCC') + val('vPhone');
+    var _vccCode = val('vCC');
+    var _vccEntry = _CC ? _CC.filter(function(c){return c.c===_vccCode;})[0] : null;
+    data.country = _vccEntry ? _vccEntry.f+' '+_vccEntry.n : _vccCode;
+  }
+
+  if (form === 'StockRequest') {
+    data.stockItem             = val('sItem');
+    data.stockPackageSize      = val('sPkgSize');
+    data.stockRemaining        = val('sRemaining');
+    data.stockQuantityNeeded   = val('sQtyNeeded');
+    data.stockDeliveryDate     = val('sDeliveryDate');
+    data.stockRequestedBy      = val('sRequestedBy');
+    if (!data.stockItem) { toast('Please enter item name.', 'warn'); return; }
+  }
+
+  // Collect item rows
+  if (form !== 'StockRequest') {
+    var allRows = document.querySelectorAll('.item-row');
+    if (allRows.length === 0) { toast('Add at least one item.', 'warn'); return; }
+
+    data.itemName    = [];
+    data.quantity    = [];
+    data.packageSize = [];
+    data.deliveryDate= [];
+    data.pkgSize     = [];
+    data.availDate   = [];
+    data.vendorItem  = [];
+    data.vendorAmount = [];   // replaces vendorSize + vendorQty
+    data.vendorPrice = [];
+    data.vendorDeliveryDate = [];
+    data.packagingCost = [];  // cost for profit tracking
+
+    allRows.forEach(function(row) {
+      var get = function(name) {
+        var el = row.querySelector('[name="' + name + '"]');
+        return el ? el.value : '';
+      };
+      if (form === 'Vendor') {
+        data.vendorItem.push(get('vendorItem[]'));
+        data.vendorAmount.push(get('vendorAmount[]'));   // fixed field name
+        data.vendorPrice.push(get('vendorPrice[]'));
+        data.vendorDeliveryDate.push(get('vendorDeliveryDate[]'));
+      } else if (form === 'Packaging') {
+        data.itemName.push(get('itemName[]'));
+        data.pkgSize.push(get('pkgSize[]'));
+        data.quantity.push(get('quantity[]'));
+        data.packagingCost.push(get('packagingCost[]'));  // NEW
+        data.availDate.push(get('availDate[]'));
+      } else {
+        data.itemName.push(get('itemName[]'));
+        data.packageSize.push(get('packageSize[]'));
+        data.quantity.push(get('quantity[]'));
+        data.deliveryDate.push(get('deliveryDate[]'));
+      }
+    });
+  }
+
+  // For Franchise, totalBox is hidden so we read from hiddenTotal; for Sales/Order read from totalAmount
+  var _taEl = document.getElementById('totalAmount');
+  var _htEl = document.getElementById('hiddenTotal');
+  data.totalPay = (form === 'Franchise' && _htEl && _htEl.value)
+    ? _htEl.value
+    : (_taEl ? _taEl.textContent.replace(/,/g,'') : 0);
+
+  // File
+  var fileInp = document.getElementById('fileInp');
+  var file = fileInp && fileInp.files && fileInp.files[0];
+
+  btnLoading(btn, true);
+
+  var _submitting = false;
+
+  function doSend(finalData) {
+    if (_submitting) { toast('Please wait, submitting…', 'warn'); return; }
+    _submitting = true;
+    gasRun('processSubmission', finalData).then(function(r) {
+      _submitting = false;
+      btnLoading(btn, false);
+      if (r && r.success) {
+        toast(r.message || 'Submitted successfully!');
+
+        // ── CLEAR FORM ──────────────────────────────────────────────
+        var panel = document.getElementById('panelOrderForm');
+        if (panel) {
+          panel.querySelectorAll('input:not([type=hidden]), select, textarea').forEach(function(el){
+            if (el.type==='checkbox'||el.type==='radio') el.checked=false; else el.value='';
+          });
+        }
+        var ic = document.getElementById('itemsContainer');
+        if (ic) ic.innerHTML = '';
+        var ta = document.getElementById('totalAmount');
+        if (ta) ta.textContent = '0.00';
+        var tb = document.getElementById('totalBox');
+        if (tb) tb.style.display = 'none';
+        // ────────────────────────────────────────────────────────────
+
+        // Show receipt for sales/order/franchise forms
+        if (form==='Sales'||form==='Order'||form==='Franchise') {
+          var names  = finalData.itemName    || [];
+          var qtys   = finalData.quantity    || [];
+          var pkgs   = finalData.packageSize || [];
+          var rawTotal = parseFloat((finalData.totalPay||'0').toString().replace(/,/g,''))||0;
+          var rcItems  = [];
+          names.forEach(function(n,i){
+            if (!n) return;
+            var pkg  = pkgs[i] || '';
+            var qty  = parseInt(qtys[i])||1;
+            var unitPrice = (PRICE_MAP[n] && pkg && PRICE_MAP[n][pkg]) ? PRICE_MAP[n][pkg] : 0;
+            var lineAmt  = unitPrice * qty;
+            rcItems.push({name:n, pkg:pkg, qty:qty, unitPrice:unitPrice, amount:lineAmt});
+          });
+          showReceiptModal({
+            orderId:   r.orderId || '—',
+            customer:  finalData.entityName,
+            phone:     finalData.phoneNumber,
+            city:      finalData.city || finalData.location,
+            country:   finalData.country || '',
+            orderType: finalData.orderType || form,
+            employee:  finalData.employeeId || (APP.user&&APP.user.displayName) || '—',
+            items:     rcItems,
+            total:     rawTotal,
+            isBulk:    form === 'Franchise'
+          });
+        } else {
+          closeOverlay();
+        }
+
+      } else {
+        toast(r.message || 'Submission failed.', 'error');
+      }
+    }).catch(function(e) {
+      _submitting = false;
+      btnLoading(btn, false);
+      toast('Error: ' + (e.message || e), 'error');
+    });
+  }
+
+  if (file) {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var b64 = reader.result.split(',')[1];
+      data.fileObject = { name: file.name, type: file.type, data: b64 };
+      doSend(data);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    doSend(data);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  CHANGE PASSWORD
+// ═══════════════════════════════════════════════════════════════════
+function initChangePassword() {
+  var role = APP.user.role;
+  var empField = document.getElementById('cpEmpIdField');
+  if (role === 'admin') {
+    empField.style.display = 'block';
+    document.getElementById('cpEmpId').value = '';
+  } else {
+    empField.style.display = 'none';
+    document.getElementById('cpEmpId').value = APP.user.id;
+  }
+  document.getElementById('cpNewPass').value = '';
+  document.getElementById('cpConfirmPass').value = '';
+}
+
+function submitChangePassword() {
+  var newPass  = document.getElementById('cpNewPass').value;
+  var confPass = document.getElementById('cpConfirmPass').value;
+  var empId    = document.getElementById('cpEmpId').value || APP.user.id;
+
+  if (!newPass)           { toast('Enter new password.', 'warn'); return; }
+  if (newPass.length < 4) { toast('Password too short (min 4 chars).', 'warn'); return; }
+  if (newPass !== confPass){ toast('Passwords do not match.', 'warn'); return; }
+
+  gasRun('changePassword', empId, newPass, APP.user.id, APP.user.role).then(function(r) {
+    if (r && r.success) { toast(r.message || 'Password updated.'); closeOverlay(); }
+    else toast(r.message || 'Failed.', 'error');
+  }).catch(function(e) { toast('Error: ' + (e.message || e), 'error'); });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  ORDER TRACKING
+// ═══════════════════════════════════════════════════════════════════
+function loadOrders() {
+  showLoader('trackLoader', true);
+  document.getElementById('trackBody').innerHTML = '';
+  document.getElementById('trackEmpty').style.display = 'none';
+
+  var filters = {
+    search:   document.getElementById('trSearch').value,
+    status:   document.getElementById('trStatus').value,
+    source:   document.getElementById('trSource').value,
+    dateFrom: document.getElementById('trDateFrom').value,
+    dateTo:   document.getElementById('trDateTo').value
+  };
+
+  gasRun('getOrderTrackingData', filters, APP.user.role).then(function(raw) {
+    showLoader('trackLoader', false);
+    // FIX-7: server now returns JSON.stringify() — parse it here
+    var r;
+    try { r = (typeof raw === 'string') ? JSON.parse(raw) : raw; }
+    catch(pe) { toast('Failed to parse order data.', 'error'); return; }
+    if (!r || !r.success) { toast((r && r.message) || 'Failed to load orders.', 'error'); return; }
+    // Sort most recent first by Timestamp
+    var rows = r.rows || [];
+    rows.sort(function(a, b) {
+      var ta = a.Timestamp ? new Date(a.Timestamp) : new Date(0);
+      var tb = b.Timestamp ? new Date(b.Timestamp) : new Date(0);
+      return tb - ta; // newest first
+    });
+    APP.orders = rows;
+    APP.filteredOrders = APP.orders;
+    APP.page = 1;
+    renderOrderTable();
+    // Update pending orders badge in sidebar
+    var pending = APP.orders.filter(function(o){ return o.Status === 'Pending'; }).length;
+    var badge = document.getElementById('pendingBadge');
+    if (badge) { badge.textContent = pending; badge.style.display = pending > 0 ? 'inline' : 'none'; }
+  }).catch(function(e) {
+    showLoader('trackLoader', false);
+    toast('Error loading orders: ' + (e.message || e), 'error');
+  });
+}
+
+function filterOrders() {
+  var search   = (document.getElementById('trSearch').value   || '').toLowerCase().trim();
+  var status   = (document.getElementById('trStatus').value   || '').toLowerCase();
+  var source   = (document.getElementById('trSource').value   || '').toLowerCase(); // e.g. 'sales_db'
+  var dateFrom = document.getElementById('trDateFrom').value;
+  var dateTo   = document.getElementById('trDateTo').value;
+
+  APP.filteredOrders = APP.orders.filter(function(row) {
+    // Text search: OrderID, CustomerName, Phone, ItemName, OrderType
+    if (search) {
+      var hay = [row.OrderID, row.CustomerName, row.Phone,
+                 row.ItemName, row.OrderType, row.FranchiseType]
+                .map(function(v){ return (v||'').toLowerCase(); }).join(' ');
+      if (hay.indexOf(search) === -1) return false;
+    }
+    // Status: exact match
+    if (status && (row.Status || '').toLowerCase() !== status) return false;
+    // Source: row.Source is 'Sales_DB' or 'Franchise_DB'
+    if (source && (row.Source || '').toLowerCase() !== source) return false;
+    // Date range
+    if (dateFrom || dateTo) {
+      var ts = row.Timestamp ? new Date(row.Timestamp) : null;
+      if (ts && !isNaN(ts)) {
+        if (dateFrom && ts < new Date(dateFrom)) return false;
+        if (dateTo   && ts > new Date(dateTo + 'T23:59:59')) return false;
+      }
+    }
+    return true;
+  });
+
+  // Update empty-state message depending on whether filters are active
+  var emptyP = document.querySelector('#trackEmpty p');
+  if (emptyP) {
+    var hasFilter = search || status || source || dateFrom || dateTo;
+    emptyP.textContent = hasFilter ? 'No matching orders found. Try clearing filters.' : 'No orders found';
+  }
+
+  APP.page = 1;
+  renderOrderTable();
+}
+
+function clearTrackFilters() {
+  document.getElementById('trSearch').value   = '';
+  document.getElementById('trStatus').value   = '';
+  document.getElementById('trSource').value   = '';
+  document.getElementById('trDateFrom').value = '';
+  document.getElementById('trDateTo').value   = '';
+  APP.filteredOrders = APP.orders;
+  APP.page = 1;
+  renderOrderTable();
+}
+
+function renderOrderTable() {
+  var tbody = document.getElementById('trackBody');
+  tbody.innerHTML = '';
+  var total   = APP.filteredOrders.length;
+  var start   = (APP.page - 1) * APP.pageSize;
+  var end     = Math.min(start + APP.pageSize, total);
+  var pageRows= APP.filteredOrders.slice(start, end);
+
+  if (pageRows.length === 0) {
+    document.getElementById('trackEmpty').style.display = 'block';
+    document.getElementById('trackPagination').style.display = 'none';
+    return;
+  }
+  document.getElementById('trackEmpty').style.display = 'none';
+
+  pageRows.forEach(function(row) {
+    var tr = document.createElement('tr');
+    tr.onclick = function() { openOrderDetail(row); };
+
+    var status = row.Status || 'Pending';
+    var statusClass = 's-' + status.toLowerCase().replace(' ', '-').replace(' ','').replace('intransit','transit');
+
+    var srcClass = 'src-' + (row.Source || 'sales').toLowerCase();
+
+    tr.innerHTML = [
+      '<td style="font-family:monospace;font-size:.8rem;color:var(--g700);font-weight:600">' + (row.OrderID || '-') + '</td>',
+      '<td><span class="src-badge ' + srcClass + '">' + (row.Source || '-') + '</span></td>',
+      '<td style="font-weight:600">' + (row.CustomerName || '-') + '</td>',
+      '<td style="color:var(--muted);font-size:.82rem">' + (row.Phone || '-') + '</td>',
+      '<td style="max-width:140px;overflow:hidden;text-overflow:ellipsis">' + (row.ItemName || '-') + '</td>',
+      '<td style="font-weight:700;color:var(--g700)">' + (row.Total ? Number(row.Total).toLocaleString() : '-') + '</td>',
+      '<td style="font-size:.8rem;color:var(--muted)">' + (row.DeliveryDate || '-') + '</td>',
+      '<td><span class="status-badge ' + statusClass + '">' + status + '</span></td>',
+      '<td><button class="btn btn-ghost btn-sm" style="padding:5px 10px;font-size:.75rem">Edit</button></td>'
+    ].join('');
+
+    tbody.appendChild(tr);
+  });
+
+  // Pagination
+  var pages = Math.ceil(total / APP.pageSize);
+  var pag = document.getElementById('trackPagination');
+  pag.style.display = 'flex';
+  document.getElementById('paginationInfo').textContent = 'Showing ' + (start+1) + '–' + end + ' of ' + total + ' orders';
+
+  var btns = document.getElementById('pageButtons');
+  btns.innerHTML = '';
+  var makePageBtn = function(p, label) {
+    var b = document.createElement('button');
+    b.className = 'page-btn' + (p === APP.page ? ' active' : '');
+    b.textContent = label || p;
+    b.onclick = function() { APP.page = p; renderOrderTable(); };
+    return b;
+  };
+
+  if (APP.page > 1)    btns.appendChild(makePageBtn(APP.page - 1, '‹'));
+  var startP = Math.max(1, APP.page - 2);
+  var endP   = Math.min(pages, APP.page + 2);
+  for (var p = startP; p <= endP; p++) btns.appendChild(makePageBtn(p));
+  if (APP.page < pages) btns.appendChild(makePageBtn(APP.page + 1, '›'));
+}
+
+function openOrderDetail(row) {
+  APP.selectedOrderId = row.OrderID;
+  var panel = document.getElementById('orderDetailPanel');
+  panel.classList.add('show');
+
+  var grid = document.getElementById('detailGrid');
+  grid.innerHTML = '';
+
+  var fields = [
+    ['Order ID',    row.OrderID],
+    ['Source',      row.Source],
+    ['Customer',    row.CustomerName],
+    ['Phone',       row.Phone],
+    ['Location',    (row.Location || '') + ' / ' + (row.City || '')],
+    ['Item(s)',     row.ItemName],
+    ['Qty',         row.Quantity],
+    ['Package',     row.PackageSize],
+    ['Delivery',    row.DeliveryDate],
+    ['Total (ETB)', row.Total ? Number(row.Total).toLocaleString() : '-'],
+    ['Employee',    row.EmployeeID],
+    ['Notes',       row.Notes]
+  ];
+
+  fields.forEach(function(f) {
+    if (!f[1]) return;
+    var item = document.createElement('div');
+    item.className = 'detail-item';
+    item.innerHTML = '<label>' + f[0] + '</label><span>' + f[1] + '</span>';
+    grid.appendChild(item);
+  });
+
+  APP.selectedOrder = row; // store full row for item modification
+
+  var sel = document.getElementById('newStatusSel');
+  if (row.Status && sel) sel.value = row.Status;
+
+  // Build modify items section
+  buildModItemRows(row);
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeOrderDetail() {
+  document.getElementById('orderDetailPanel').classList.remove('show');
+  APP.selectedOrderId = null;
+  APP.selectedOrder   = null;
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+//  ORDER ITEM MODIFICATION
+// ──────────────────────────────────────────────────────────────────────────
+function buildModItemRows(order) {
+  var container = document.getElementById('modItemsContainer');
+  container.innerHTML = '';
+  // Get all rows for this order ID (each row = one item in multi-item orders)
+  var orderRows = APP.orders.filter(function(o){ return o.OrderID === order.OrderID && o.ItemName; });
+  if (!orderRows.length) orderRows = [order]; // fallback
+  orderRows.forEach(function(row, idx) {
+    container.appendChild(createModRow(row.ItemName||'', row.PackageSize||'', row.Quantity||'1', idx));
+  });
+}
+
+function createModRow(itemName, pkgSize, qty, idx) {
+  var wrap = document.createElement('div');
+  wrap.className = 'item-edit-row';
+  wrap.dataset.idx = idx;
+
+  // Item select
+  var itemWrap = document.createElement('div'); itemWrap.className = 'field';
+  var itemLbl = document.createElement('label'); itemLbl.textContent = 'Item';
+  var itemSel = document.createElement('select'); itemSel.name = 'mod-item';
+  itemSel.style.cssText = 'width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--rad);font-size:.84rem';
+  var itemNames = Object.keys(PRICE_MAP);
+  var blank = document.createElement('option'); blank.value=''; blank.textContent='Select item...';
+  itemSel.appendChild(blank);
+  itemNames.forEach(function(n) {
+    var o = document.createElement('option'); o.value=n; o.textContent=n;
+    if (n === itemName) o.selected=true;
+    itemSel.appendChild(o);
+  });
+  var pkgSel = document.createElement('select'); pkgSel.name='mod-pkg';
+  pkgSel.style.cssText='width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--rad);font-size:.84rem';
+  function updatePkg(selItem, currentPkg) {
+    pkgSel.innerHTML='';
+    var sizes = selItem && PRICE_MAP[selItem] ? Object.keys(PRICE_MAP[selItem]) : ['100 g','200 g','500 g','1 kg'];
+    sizes.forEach(function(s){
+      var o=document.createElement('option'); o.value=s; o.textContent=s;
+      if(s===currentPkg) o.selected=true;
+      pkgSel.appendChild(o);
+    });
+  }
+  itemSel.onchange = function(){ updatePkg(this.value, ''); };
+  updatePkg(itemName, pkgSize);
+
+  // Qty
+  var qtyWrap = document.createElement('div'); qtyWrap.className='field';
+  var qtyLbl = document.createElement('label'); qtyLbl.textContent='Qty';
+  var qtyInp = document.createElement('input');
+  qtyInp.type='number'; qtyInp.min='0'; qtyInp.value=qty||'1'; qtyInp.name='mod-qty';
+  qtyInp.style.cssText='width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--rad);font-size:.84rem';
+  qtyInp.title='Set to 0 to remove this item';
+  var qtyHint=document.createElement('small');
+  qtyHint.textContent='(0 = remove)'; qtyHint.style.cssText='color:var(--muted);font-size:.7rem';
+
+  // Delete button
+  var delBtn = document.createElement('button');
+  delBtn.className='item-del-btn'; delBtn.innerHTML='<i class="fas fa-trash"></i>';
+  delBtn.title='Remove this item row';
+  delBtn.onclick = function(e){ e.preventDefault(); wrap.parentNode.removeChild(wrap); };
+
+  itemWrap.appendChild(itemLbl); itemWrap.appendChild(itemSel);
+  var pkgWrap=document.createElement('div'); pkgWrap.className='field';
+  var pkgLbl=document.createElement('label'); pkgLbl.textContent='Pkg Size';
+  pkgWrap.appendChild(pkgLbl); pkgWrap.appendChild(pkgSel);
+  qtyWrap.appendChild(qtyLbl); qtyWrap.appendChild(qtyInp); qtyWrap.appendChild(qtyHint);
+  wrap.appendChild(itemWrap); wrap.appendChild(pkgWrap); wrap.appendChild(qtyWrap); wrap.appendChild(delBtn);
+  return wrap;
+}
+
+function modAddItem() {
+  var container = document.getElementById('modItemsContainer');
+  var idx = container.querySelectorAll('.item-edit-row').length;
+  container.appendChild(createModRow('','','1', idx));
+}
+
+function applyItemModification() {
+  var order = APP.selectedOrder;
+  if (!order || !order.OrderID) { toast('No order selected.', 'warn'); return; }
+  var role = APP.user.role;
+  if (role === 'guest') { toast('Login required.', 'warn'); return; }
+
+  var rows = document.querySelectorAll('#modItemsContainer .item-edit-row');
+  var items = [];
+  rows.forEach(function(row) {
+    var item = row.querySelector('[name=mod-item]').value.trim();
+    var pkg  = row.querySelector('[name=mod-pkg]').value.trim();
+    var qty  = parseInt(row.querySelector('[name=mod-qty]').value) || 0;
+    if (item) items.push({item:item, pkg:pkg, qty:qty});
+  });
+  // Filter out qty=0 (removed items)
+  var kept = items.filter(function(i){ return i.qty > 0; });
+  if (!kept.length) { toast('At least one item required.', 'warn'); return; }
+
+  var btn = document.querySelector('.mod-section .submit-btn');
+  if(btn){btn.classList.add('loading');btn.disabled=true;}
+  gasRun('modifyOrderItems', order.OrderID, kept, APP.user.id, APP.user.role).then(function(r) {
+    if(btn){btn.classList.remove('loading');btn.disabled=false;}
+    if (r && r.success) {
+      toast('Items updated successfully!');
+      closeOrderDetail();
+      loadOrders();
+    } else {
+      toast(r.message || 'Item update failed.', 'error');
+    }
+  }).catch(function(e) {
+    if(btn){btn.classList.remove('loading');btn.disabled=false;}
+    toast('Error: ' + (e.message||e), 'error');
+  });
+}
+
+// FEAT-1: Print the currently selected order — thermal receipt style
+function printOrder() {
+  if (!APP.selectedOrderId) { toast('Select an order first.', 'warn'); return; }
+  var order = APP.orders.find(function(o){ return o.OrderID === APP.selectedOrderId; });
+  if (!order) return;
+
+  var isBulk = (order.Source||'').indexOf('Franchise') > -1;
+  var items = APP.orders.filter(function(o){ return o.OrderID === APP.selectedOrderId && o.ItemName; });
+
+  var calcTotal = 0;
+  var itemRows = items.map(function(o) {
+    var up = (PRICE_MAP[o.ItemName] && o.PackageSize && PRICE_MAP[o.ItemName][o.PackageSize]) ? PRICE_MAP[o.ItemName][o.PackageSize] : 0;
+    var amt = up * (parseInt(o.Quantity)||1);
+    calcTotal += amt;
+    if (isBulk) {
+      return '<tr><td class="td-desc">'+(o.ItemName||'—')+(o.PackageSize?' ('+o.PackageSize+')':'')+'</td><td class="c">'+(o.Quantity||1)+'</td></tr>';
+    }
+    return '<tr><td class="td-desc">'+(o.ItemName||'—')+(o.PackageSize?' ('+o.PackageSize+')':'')+'</td><td class="c">'+(o.Quantity||1)+'</td><td class="r">'+(up?Number(up).toLocaleString():'—')+'</td><td class="r"><b>'+(amt?Number(amt).toLocaleString():'—')+'</b></td></tr>';
+  }).join('');
+
+  var displayTotal = (order.Total && Number(order.Total)>0) ? Number(order.Total) : calcTotal;
+  var hdrCols = isBulk ? '<th>Description</th><th class="c">Qty</th>' : '<th>Description</th><th class="c">Qty</th><th class="r">Price</th><th class="r">Amount</th>';
+  var footerRows = isBulk ? '' :
+    '<tr><td colspan="3" style="padding-top:3px">TXBL1</td><td class="r" style="padding-top:3px">'+Number(displayTotal).toLocaleString()+'</td></tr>'+
+    '<tr class="tot-line"><td colspan="3"><b>TOTAL</b></td><td class="r"><b>'+Number(displayTotal).toLocaleString()+'</b></td></tr>'+
+    '<tr><td colspan="3">CASH</td><td class="r">'+Number(displayTotal).toLocaleString()+'</td></tr>'+
+    '<tr><td colspan="3">ITEM#</td><td class="r">'+items.length+'</td></tr>';
+
+  var now = new Date();
+  var dateStr = now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric'})+' '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  var qrContent = RECEIPT_WEBAPP_URL ? RECEIPT_WEBAPP_URL+'?orderId='+encodeURIComponent(order.OrderID||'')+'&customer='+encodeURIComponent(order.CustomerName||'') : 'Asella Organic | Order: '+order.OrderID+' | TIN: '+RECEIPT_TIN;
+
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Receipt '+order.OrderID+'</title>');
+  w.document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>');
+  w.document.write('<style>@page{size:80mm auto;margin:0 2mm}*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Courier New",Courier,monospace;font-size:13px;color:#000;width:72mm;padding:3mm 2mm 4mm}.biz-name{font-size:16px;font-weight:bold;text-align:center;margin-bottom:3px;letter-spacing:.5px}.biz-tin{font-size:13px;font-weight:bold;text-align:center;margin-bottom:2px}.biz-sub{font-size:11px;text-align:center;color:#111;margin-bottom:2px}.divider{border:none;border-top:1px dashed #000;margin:5px 0}.divider2{border:none;border-top:2px solid #000;margin:5px 0}.invoice-lbl{text-align:center;font-weight:bold;font-size:13px;letter-spacing:2px;padding:4px 0;margin:4px 0;border-top:1px solid #000;border-bottom:1px solid #000}table{width:100%;border-collapse:collapse}th{text-align:left;border-bottom:1px solid #000;padding:3px 1px;font-size:12px;text-transform:uppercase;font-weight:bold}td{padding:3px 1px;vertical-align:top;word-break:break-word;font-size:12px}.td-desc{max-width:100px}.c{text-align:center;width:20px}.r{text-align:right;min-width:44px}.tot-line td{border-top:1px dashed #000;font-weight:bold;font-size:14px;padding-top:3px}.info-row{display:flex;justify-content:space-between;margin:2.5px 0;font-size:12px;gap:4px}.lbl{font-weight:bold;white-space:nowrap}.val{text-align:right;word-break:break-word}.footer{text-align:center;font-size:11px;margin-top:6px;color:#111}.validity{text-align:center;font-size:10px;font-style:italic;margin:5px 2px;padding:4px;border:1px solid #000}#qrcode{text-align:center;margin:8px auto 3px}#qrcode canvas,#qrcode img{display:block;margin:0 auto}.scan-lbl{text-align:center;font-size:11px;margin-top:3px}.noprint{display:block;text-align:center;margin:14px 0}@media print{.noprint{display:none}body{width:72mm;padding:2mm 1mm 3mm}}</style></head><body>');
+  w.document.write('<div class="biz-name">'+RECEIPT_BUSINESS.name+'</div>');
+  w.document.write('<div class="biz-tin">TIN: '+RECEIPT_TIN+'</div>');
+  w.document.write('<div class="biz-sub">'+RECEIPT_BUSINESS.address+'</div>');
+  w.document.write('<div class="biz-sub">Tel: '+RECEIPT_BUSINESS.phone+' / +251 942 223 999</div>');
+  w.document.write('<div class="biz-sub">DATE: '+dateStr+'</div>');
+  w.document.write('<div class="divider2"></div><div class="invoice-lbl">== CASH INVOICE ==</div>');
+  [['Order ID',order.OrderID||''],['Customer',order.CustomerName||''],['Phone',order.Phone||''],['Location',(order.City||order.Location||'')],['Order Type',order.OrderType||''],['Operator',order.EmployeeID||'']].forEach(function(r){if(!r[1])return;w.document.write('<div class="info-row"><span class="lbl">'+r[0]+'</span><span class="val">'+r[1]+'</span></div>');});
+  w.document.write('<div class="divider"></div>');
+  w.document.write('<table><thead><tr>'+hdrCols+'</tr></thead><tbody>'+itemRows+'</tbody>');
+  if(!isBulk)w.document.write('<tfoot>'+footerRows+'</tfoot>');
+  w.document.write('</table><div class="divider2"></div>');
+  w.document.write('<div id="qrcode"></div><div class="scan-lbl">Scan to view receipt online</div><div class="divider"></div>');
+  w.document.write('<div class="validity">This receipt is valid only for Asella Organic orders.</div>');
+  w.document.write('<div class="footer"><div>Thank you for your order!</div><div>'+RECEIPT_BUSINESS.website+'</div></div>');
+  w.document.write('<div class="noprint"><button onclick="window.print()" style="padding:10px 26px;background:#065f46;color:#fff;border:none;border-radius:7px;cursor:pointer;font-size:14px;margin-right:8px">Print (80mm)</button><button onclick="window.close()" style="padding:10px 18px;background:#e2e8f0;color:#2d3748;border:none;border-radius:7px;cursor:pointer;font-size:14px">Close</button></div>');
+  w.document.write('</body></html>');
+  w.document.close();
+  w.onload=function(){try{new w.QRCode(w.document.getElementById('qrcode'),{text:qrContent,width:200,height:200,colorDark:'#000000',colorLight:'#ffffff',correctLevel:w.QRCode.CorrectLevel.M});}catch(e){var qd=w.document.getElementById('qrcode');if(qd)qd.innerHTML='<div style="font-size:10px;text-align:center">[QR: '+order.OrderID+']</div>';}};
+}
+
+function applyStatusUpdate() {
+  if (!APP.selectedOrderId) { toast('Select an order first.', 'warn'); return; }
+  var newStatus = document.getElementById('newStatusSel').value;
+  var notes     = document.getElementById('statusNotes').value;
+
+  gasRun('updateOrderStatus', APP.selectedOrderId, newStatus, notes, APP.user.id, APP.user.role).then(function(r) {
+    if (r && r.success) {
+      toast('Status updated to ' + newStatus);
+      closeOrderDetail();
+      loadOrders();
+    } else {
+      toast(r.message || 'Update failed.', 'error');
+    }
+  }).catch(function(e) { toast('Error: ' + (e.message || e), 'error'); });
+}
+
+function exportData() {
+  var rows = (APP.filteredOrders && APP.filteredOrders.length) ? APP.filteredOrders : APP.orders;
+  if (!rows || rows.length === 0) { toast('No orders to export.', 'warn'); return; }
+
+  var cols = ['OrderID','Source','CustomerName','Phone','Location','City',
+              'OrderType','FranchiseType','ItemName','Quantity','PackageSize',
+              'DeliveryDate','Total','Status','EmployeeID','Notes','Timestamp'];
+  var headers = ['Order ID','Source','Customer','Phone','Location','City',
+                 'Order Type','Franchise Type','Item','Qty','Package Size',
+                 'Delivery Date','Total (ETB)','Status','Employee','Notes','Timestamp'];
+
+  function esc(v) {
+    var s = v === null || v === undefined ? '' : String(v);
+    return (s.indexOf(',') > -1 || s.indexOf('"') > -1 || s.indexOf('\n') > -1)
+      ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+
+  var lines = [headers.join(',')];
+  rows.forEach(function(r) {
+    lines.push(cols.map(function(k) {
+      var v = r[k] || '';
+      if (k === 'Timestamp' && v) v = v.slice(0,19).replace('T',' ');
+      return esc(v);
+    }).join(','));
+  });
+
+  var today = new Date();
+  var d = today.getFullYear()
+    + String(today.getMonth()+1).padStart(2,'0')
+    + String(today.getDate()).padStart(2,'0');
+  var blob = new Blob([lines.join('\r\n')], { type:'text/csv;charset=utf-8;' });
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href = url; a.download = 'orders_export_' + d + '.csv';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+  toast('Exported ' + rows.length + ' order(s) to CSV.');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  ANALYTICS
+// ═══════════════════════════════════════════════════════════════════
+function loadAnalytics() {
+  showLoader('analyticsLoader', true);
+  document.getElementById('analyticsContent').style.display = 'none';
+
+  gasRun('getOrderAnalytics').then(function(raw) {
+    showLoader('analyticsLoader', false);
+    // FIX-8: server now returns JSON.stringify() — parse it here
+    var r;
+    try { r = (typeof raw === 'string') ? JSON.parse(raw) : raw; }
+    catch(pe) { toast('Failed to parse analytics data.', 'error'); return; }
+    if (!r || !r.success) { toast((r && r.message) || 'Analytics failed.', 'error'); return; }
+    // getOrderAnalytics returns {success:true, data:{totalOrders,...}} — pass r.data
+    renderAnalytics(r.data || r);
+    document.getElementById('analyticsContent').style.display = 'block';
+  }).catch(function(e) {
+    showLoader('analyticsLoader', false);
+    toast('Analytics error: ' + (e.message || e), 'error');
+  });
+}
+
+function renderAnalytics(d) {
+  if (!d) { toast('No analytics data returned.', 'error'); return; }
+
+  // ── KPI Cards ─────────────────────────────────────────────────────
+  var kpiGrid = document.getElementById('kpiGrid');
+  kpiGrid.innerHTML = '';
+  var kpis = [
+    { label: 'Total Orders',       val: (d.totalOrders || 0).toLocaleString(),                                    sub: 'Sales + Franchise' },
+    { label: 'Total Revenue (In)', val: 'ETB ' + Number(d.totalRevenue || 0).toLocaleString(),                    sub: 'Sales_DB + Franchise_DB' },
+    { label: 'Vendor Costs (Out)', val: 'ETB ' + Number(d.totalVendorCost || 0).toLocaleString(),                 sub: 'From Vendor_DB' },
+    { label: 'Packaging Costs',    val: 'ETB ' + Number(d.totalPackagingCost || 0).toLocaleString(),              sub: 'From Packaging_DB' },
+    { label: 'Net Profit',         val: 'ETB ' + Number(d.grossProfit || d.totalRevenue - (d.totalCostOut||0) || 0).toLocaleString(), sub: 'Revenue − All Costs' },
+    { label: 'Pending Orders',     val: ((d.statusCount && d.statusCount['Pending']) || 0).toLocaleString(),      sub: 'Require action' }
+  ];
+  kpis.forEach(function(k) {
+    var card = document.createElement('div');
+    card.className = 'kpi-card';
+    card.innerHTML = '<div class="kpi-label">' + k.label + '</div>' +
+                     '<div class="kpi-val">' + k.val + '</div>' +
+                     '<div class="kpi-sub">' + k.sub + '</div>';
+    kpiGrid.appendChild(card);
+  });
+
+  // ── Helper: render bar chart ──────────────────────────────────────
+  function renderBar(id, obj, opts) {
+    opts = opts || {};
+    var container = document.getElementById(id);
+    if (!container) return;
+    container.innerHTML = '';
+    var keys = Object.keys(obj || {});
+    if (!keys.length) { container.innerHTML = '<p style="color:var(--muted);font-size:.82rem">No data yet</p>'; return; }
+    var limit = opts.limit || 8;
+    var sorted = keys.sort(function(a,b){ return (obj[b]||0) - (obj[a]||0); }).slice(0, limit);
+    // If reverseForWorst, flip order
+    if (opts.reverse) sorted = keys.sort(function(a,b){ return (obj[a]||0) - (obj[b]||0); }).slice(0, limit);
+    var max = Math.max.apply(null, sorted.map(function(k){ return obj[k]||0; }));
+    var color = opts.color || 'var(--g700)';
+    sorted.forEach(function(k) {
+      var val = obj[k] || 0;
+      var pct = max > 0 ? (val / max * 100) : 0;
+      var row = document.createElement('div');
+      row.className = 'bar-row';
+      row.innerHTML = '<div class="bar-label" title="' + k + '">' + k + '</div>' +
+                      '<div class="bar-track"><div class="bar-fill" style="width:' + pct.toFixed(1) + '%;background:' + color + '"></div></div>' +
+                      '<div class="bar-val">' + (opts.currency ? 'ETB ' + Number(val).toLocaleString() : val) + '</div>';
+      container.appendChild(row);
+    });
+  }
+
+  // Revenue & Profit by month
+  renderBar('revenueByMonthChart', d.revenueByMonth || {}, { currency: true, limit: 12, color: 'var(--g700)' });
+  renderBar('profitByMonthChart',  d.profitByMonth  || {}, { currency: true, limit: 12, color: '#2e7d32' });
+
+  // Products
+  var bestObj = {}, worstObj = {};
+  (d.topItems || []).forEach(function(i) { bestObj[i.name] = i.count; });
+  (d.bottomItems || []).forEach(function(i) { worstObj[i.name] = i.count; });
+  renderBar('bestProductsChart',  bestObj,  { color: 'var(--g600)' });
+  renderBar('worstProductsChart', worstObj, { color: 'var(--red)' });
+
+  // Employee & Status
+  renderBar('employeeChart', d.employeeCount || {}, { color: 'var(--g500)' });
+  renderBar('statusChart',   d.statusCount   || {}, { color: 'var(--g700)' });
+
+  // Demographics & location
+  renderBar('genderChart',   d.genderCount   || {}, { color: '#43a047' });
+  renderBar('ageGroupChart', d.ageGroupCount || {}, { color: '#66bb6a' });
+  renderBar('regionChart',   d.regionCount   || {}, { color: '#81c784' });
+  renderBar('locationChart', d.cityCount     || {}, { color: 'var(--g700)' });
+
+  // YoY
+  renderBar('yoyChart', d.ordersByYear || {}, { color: 'var(--g800)' });
+
+  // Stock movement (packaging)
+  renderBar('stockChart', d.stockMovement || {}, { color: '#a5d6a7' });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  USER MANAGEMENT
+// ═══════════════════════════════════════════════════════════════════
+function loadUsers() {
+  showLoader('usersLoader', true);
+  document.getElementById('usersContent').style.display = 'none';
+
+  gasRun('getUsers', APP.user.role).then(function(r) {
+    showLoader('usersLoader', false);
+    if (!r || !r.success) { toast(r.message || 'Failed.', 'error'); return; }
+    renderUsers(r.users || []);
+    document.getElementById('usersContent').style.display = 'block';
+  }).catch(function(e) {
+    showLoader('usersLoader', false);
+    toast('Error: ' + (e.message || e), 'error');
+  });
+}
+
+function renderUsers(users) {
+  var tbody = document.getElementById('usersTableBody');
+  tbody.innerHTML = '';
+  users.forEach(function(u) {
+    var tr = document.createElement('tr');
+    var roleClass = 'role-' + (u.role || 'staff');
+    tr.innerHTML = '<td style="font-weight:600;font-family:monospace">' + u.id + '</td>' +
+                   '<td>' + (u.name || '-') + '</td>' +
+                   '<td><span class="role-chip ' + roleClass + '">' + (u.role || 'staff') + '</span></td>' +
+                   '<td></td>';
+    var delBtn = document.createElement('button');
+    delBtn.className = 'btn btn-danger btn-sm';
+    delBtn.textContent = 'Delete';
+    (function(uid) {
+      delBtn.onclick = function(e) { e.stopPropagation(); deleteUserConfirm(uid); };
+    })(u.id);
+    tr.cells[3].appendChild(delBtn);
+    tbody.appendChild(tr);
+  });
+}
+
+function deleteUserConfirm(uid) {
+  if (!confirm('Delete user ' + uid + '? This cannot be undone.')) return;
+  gasRun('deleteUser', uid, APP.user.role).then(function(r) {
+    if (r && r.success) { toast(r.message || 'Deleted.'); loadUsers(); }
+    else toast(r.message || 'Failed.', 'error');
+  }).catch(function(e) { toast('Error: ' + (e.message || e), 'error'); });
+}
+
+function addNewUser() {
+  var id   = document.getElementById('nuId').value.trim();
+  var name = document.getElementById('nuName').value.trim();
+  var pass = document.getElementById('nuPass').value;
+  var role2= document.getElementById('nuRole').value;
+  if (!id || !pass) { toast('ID and password required.', 'warn'); return; }
+
+  gasRun('addUser', { id: id, name: name, password: pass, role: role2 }, APP.user.role).then(function(r) {
+    if (r && r.success) {
+      toast(r.message || 'User added.');
+      document.getElementById('nuId').value = '';
+      document.getElementById('nuName').value = '';
+      document.getElementById('nuPass').value = '';
+      loadUsers();
+    } else toast(r.message || 'Failed.', 'error');
+  }).catch(function(e) { toast('Error: ' + (e.message || e), 'error'); });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════════════════
+//  RECEIPT MODAL
+// ═══════════════════════════════════════════════════════════════════
+var _rcData = null;
+
+function showReceiptModal(d) {
+  _rcData = d;
+  var now = new Date();
+  var dateStr = now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric'})
+               +' '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('rcDt').textContent        = dateStr;
+  document.getElementById('rcOrderId').textContent   = d.orderId   || '—';
+  document.getElementById('rcCustomer').textContent  = d.customer  || '—';
+  document.getElementById('rcPhone').textContent     = d.phone     || '—';
+  document.getElementById('rcCity').textContent      = (d.city||'—') + (d.country ? ', '+d.country : '');
+  document.getElementById('rcOrderType').textContent = d.orderType || '—';
+  document.getElementById('rcEmployee').textContent  = d.employee  || '—';
+  document.getElementById('rcStatus').textContent    = d.status    || 'Pending';
+  // For franchise: show editable price inputs; for regular: show prices normally
+  var _amtTh  = document.getElementById('rcAmtTh');
+  var _sumBox = document.getElementById('rcSumBox');
+  var _franBox = document.getElementById('rcFranchisePriceBox');
+  if (_amtTh)  _amtTh.style.display  = '';  // always show price column
+  if (_sumBox) _sumBox.style.display = d.isBulk ? 'none' : '';
+  if (_franBox) _franBox.style.display = d.isBulk ? '' : 'none';
+  var tbody = document.getElementById('rcItemsBody');
+  tbody.innerHTML = '';
+  (d.items||[]).forEach(function(it, idx) {
+    var tr = document.createElement('tr');
+    if (d.isBulk) {
+      // Franchise: editable price input per item
+      tr.innerHTML = '<td>'+(it.name||'—')+'</td>'
+        +'<td class="rc-tc">'+(it.pkg||'—')+'</td>'
+        +'<td class="rc-tc">'+(it.qty||1)+'</td>'
+        +'<td class="rc-tr"><input type="number" class="frc-price" data-idx="'+idx
+        +'" placeholder="ETB" min="0" style="width:74px;border:1.5px solid #86efac;border-radius:5px;padding:2px 4px;font-size:11px;text-align:right" value="'+(it.unitPrice||'')+'"></td>';
+    } else {
+      var priceCell = '<td class="rc-tr">'+(it.unitPrice ? Number(it.unitPrice).toLocaleString()+' ETB' : '—')+'</td>';
+      tr.innerHTML = '<td>'+(it.name||'—')+'</td>'
+        +'<td class="rc-tc">'+(it.pkg||'—')+'</td>'
+        +'<td class="rc-tc">'+(it.qty||1)+'</td>'
+        + priceCell;
+    }
+    tbody.appendChild(tr);
+  });
+  if (d.isBulk) {
+    // Wire up live total calculation
+    setTimeout(function() {
+      tbody.querySelectorAll('.frc-price').forEach(function(inp) {
+        inp.addEventListener('input', _rcFranchiseCalc);
+      });
+      _rcFranchiseCalc();
+    }, 30);
+  }
+  var totalVal = d.total ? Number(d.total).toLocaleString() : '0';
+  document.getElementById('rcTotal').textContent = totalVal + ' ETB';
+  var subtotalEl = document.getElementById('rcSubtotal');
+  if (subtotalEl) subtotalEl.textContent = totalVal + ' ETB';
+  document.getElementById('rcModal').classList.add('open');
+}
+
+// Live-calculates franchise total as prices are typed
+function _rcFranchiseCalc() {
+  if (!_rcData || !_rcData.isBulk) return;
+  var total = 0;
+  document.querySelectorAll('.frc-price').forEach(function(inp, idx) {
+    var price = parseFloat(inp.value) || 0;
+    var qty   = (_rcData.items && _rcData.items[idx]) ? (parseInt(_rcData.items[idx].qty)||1) : 1;
+    if (_rcData.items && _rcData.items[idx]) _rcData.items[idx].unitPrice = price;
+    total += price * qty;
+  });
+  _rcData.total = total;
+  var s = total > 0 ? Number(total).toLocaleString() + ' ETB' : '—';
+  var el = document.getElementById('rcFranTotal');
+  if (el) el.textContent = s;
+  var st = document.getElementById('rcSubtotal');
+  if (st) st.textContent = s;
+  var rt = document.getElementById('rcTotal');
+  if (rt) rt.textContent = s;
+}
+
+function closeReceipt() {
+  document.getElementById('rcModal').classList.remove('open');
+  closeOverlay();
+}
+
+/*receipt printer*/
+// ═══════════════════════════════════════════════════════════════════════════
+//  80mm THERMAL RECEIPT PRINTER — SETUP GUIDE (EPOS80260 & compatible)
+//  ───────────────────────────────────────────────────────────────────────────
+//  STEP 1 — HARDWARE SETUP (EPOS80260 / Generic 80mm USB Thermal Printer)
+//    a) Plug printer into your PC via USB. Windows will auto-install drivers.
+//       If not, download driver from the manufacturer's website.
+//    b) Open Windows "Printers & scanners" — confirm it appears in the list.
+//    c) Print a test page from printer properties to verify it works.
+//    d) Paper: load 80mm thermal roll, shiny side facing print head.
+//
+//  STEP 2 — BROWSER PRINT SETUP (required once per PC)
+//    Chrome/Edge:
+//      1. Click Print (🖨 button in receipt popup)
+//      2. Select your EPOS80260 printer from the dropdown
+//      3. Click "More settings"
+//      4. Paper size → choose "Custom" → set Width: 80mm, Height: Auto
+//      5. Margins → set to "None" or minimum
+//      6. Scale → "Default (100%)"
+//      7. Uncheck "Headers and footers"
+//      8. Click "Save as default" if available, then Print
+//    Firefox:
+//      File → Print → Page Setup → Width: 3.15 in (80mm) → OK → Print
+//
+//  STEP 3 — AUTOMATIC SIZING
+//    The receipt uses @page { size: 80mm auto } CSS so Chrome will
+//    automatically cut the page at the correct length for the roll.
+//
+//  STEP 4 — TIN (Taxpayer Identification Number)
+//    Your TIN "0093291109" is set in RECEIPT_TIN below. It prints on all receipts.
+//
+//  STEP 5 — QR CODE
+//    A real QR code is generated using qrcode.js (loaded from CDN).
+//    The QR encodes a receipt viewer URL so customers can scan to see their
+//    receipt details online. See RECEIPT_WEBAPP_URL below.
+//    • If you have deployed this GAS app as a web app, paste the URL there.
+//    • If empty, the QR still encodes the order ID and basic details.
+//
+//  NOTE: Bulk/Franchise receipts hide prices by design.
+// ═══════════════════════════════════════════════════════════════════════════
+/*end receipt printer*/
+
+// ── Receipt configuration ──────────────────────────────────────────────────
+var RECEIPT_TIN = '0093291109';
+// If your GAS app is deployed as a web app, paste the URL here (without trailing slash).
+// Example: 'https://script.google.com/macros/s/AKfycb.../exec'
+// Leave empty to encode order details as text in the QR.
+var RECEIPT_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwWd0BlznAEODLgtSMDu3J6vGKhgOWXcSvpK4cAIYgiApSeS5IMVePiLJkVzbrs7CsomA/exec';
+// Business details printed on every receipt
+var RECEIPT_BUSINESS = {
+  name:    'Asella Organic Enterprise',
+  address: 'Addis Ababa, Piazza Giorgis, Ethel Appartment',
+  phone:   '+251 909 122 623',
+  website: 'asella-organic.com'
+};
+
+function printReceipt() {
+  var d = _rcData; if (!d) return;
+
+  // ── Build item rows with real per-item price × qty = amount ──
+  // Check if franchise prices were manually entered in the modal
+  var hasFranPrices = d.isBulk && (d.items||[]).some(function(it){ return parseFloat(it.unitPrice) > 0; });
+  var calcTotal = 0;
+  var rows = (d.items||[]).map(function(it){
+    var up = parseFloat(it.unitPrice) || (PRICE_MAP[it.name] && it.pkg && PRICE_MAP[it.name][it.pkg]) || 0;
+    var amt = up * (it.qty||1);
+    calcTotal += amt;
+    if (d.isBulk && !hasFranPrices) {
+      // No prices entered — description + qty only
+      return '<tr><td class="td-desc">'+(it.name||'—')+(it.pkg?' ('+it.pkg+')':'')+'</td>'
+            +'<td class="c">'+(it.qty||1)+'</td></tr>';
+    }
+    // Regular orders or franchise with prices — show all columns
+    return '<tr><td class="td-desc">'+(it.name||'—')+(it.pkg?' ('+it.pkg+')':'')+'</td>'
+          +'<td class="c">'+(it.qty||1)+'</td>'
+          +'<td class="r">'+(up ? Number(up).toLocaleString() : '—')+'</td>'
+          +'<td class="r"><b>'+(amt ? Number(amt).toLocaleString() : '—')+'</b></td>'
+          +'</tr>';
+  }).join('');
+
+  var displayTotal = d.total ? Number(d.total) : calcTotal;
+  var showTotals = !d.isBulk || hasFranPrices;
+  var footerRows = !showTotals ? '' :
+    '<tr><td colspan="3" style="padding-top:3px">TXBL1</td><td class="r" style="padding-top:3px">'+Number(displayTotal).toLocaleString()+'</td></tr>'+
+    '<tr class="tot-line"><td colspan="3"><b>TOTAL</b></td><td class="r"><b>'+Number(displayTotal).toLocaleString()+'</b></td></tr>'+
+    '<tr><td colspan="3">CASH</td><td class="r">'+Number(displayTotal).toLocaleString()+'</td></tr>'+
+    '<tr><td colspan="3">ITEM#</td><td class="r">'+(d.items?d.items.length:1)+'</td></tr>';
+  var hdrCols = (d.isBulk && !hasFranPrices)
+    ? '<th>Description</th><th class="c">Qty</th>'
+    : '<th>Description</th><th class="c">Qty</th><th class="r">Price</th><th class="r">Amount</th>';
+
+  var qrContent = RECEIPT_WEBAPP_URL
+    ? RECEIPT_WEBAPP_URL + '?orderId=' + encodeURIComponent(d.orderId||'') + '&customer=' + encodeURIComponent(d.customer||'')
+    : 'Asella Organic | Order: '+(d.orderId||'—')+' | Customer: '+(d.customer||'—')+' | TIN: '+RECEIPT_TIN;
+
+  var dateStr = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric'})
+               +' '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8">');
+  w.document.write('<title>Receipt '+(d.orderId||'')+'</title>');
+  w.document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>');
+  w.document.write('<style>');
+  w.document.write('@page{size:80mm auto;margin:0 2mm}');
+  w.document.write('*{margin:0;padding:0;box-sizing:border-box}');
+  w.document.write('body{font-family:"Courier New",Courier,monospace;font-size:13px;color:#000;width:72mm;padding:3mm 2mm 4mm}');
+  w.document.write('.biz-name{font-size:16px;font-weight:bold;text-align:center;margin-bottom:3px;letter-spacing:.5px}');
+  w.document.write('.biz-tin{font-size:13px;font-weight:bold;text-align:center;margin-bottom:2px}');
+  w.document.write('.biz-sub{font-size:11px;text-align:center;color:#111;margin-bottom:2px}');
+  w.document.write('.divider{border:none;border-top:1px dashed #000;margin:5px 0}');
+  w.document.write('.divider2{border:none;border-top:2px solid #000;margin:5px 0}');
+  w.document.write('.invoice-lbl{text-align:center;font-weight:bold;font-size:13px;letter-spacing:2px;padding:4px 0;margin:4px 0;border-top:1px solid #000;border-bottom:1px solid #000}');
+  w.document.write('table{width:100%;border-collapse:collapse}');
+  w.document.write('th{text-align:left;border-bottom:1px solid #000;padding:3px 1px;font-size:12px;text-transform:uppercase;font-weight:bold}');
+  w.document.write('td{padding:3px 1px;vertical-align:top;word-break:break-word;font-size:12px}');
+  w.document.write('.td-desc{max-width:100px}');
+  w.document.write('.c{text-align:center;width:20px}');
+  w.document.write('.r{text-align:right;min-width:44px}');
+  w.document.write('.tot-line td{border-top:1px dashed #000;font-weight:bold;font-size:14px;padding-top:3px}');
+  w.document.write('.info-row{display:flex;justify-content:space-between;margin:2.5px 0;font-size:12px;gap:4px}');
+  w.document.write('.lbl{font-weight:bold;white-space:nowrap}');
+  w.document.write('.val{text-align:right;word-break:break-word}');
+  w.document.write('.footer{text-align:center;font-size:11px;margin-top:6px;color:#111}');
+  w.document.write('.validity{text-align:center;font-size:10px;font-style:italic;margin:5px 2px;padding:4px;border:1px solid #000}');
+  w.document.write('#qrcode{text-align:center;margin:8px auto 3px}');
+  w.document.write('#qrcode canvas,#qrcode img{display:block;margin:0 auto}');
+  w.document.write('.scan-lbl{text-align:center;font-size:11px;margin-top:3px}');
+  w.document.write('.noprint{display:block;text-align:center;margin:14px 0}');
+  w.document.write('@media print{.noprint{display:none}body{width:72mm;padding:2mm 1mm 3mm}}');
+  w.document.write('</style></head><body>');
+
+  // ── Header (Queen's style) ──
+  w.document.write('<div class="biz-name">'+RECEIPT_BUSINESS.name+'</div>');
+  w.document.write('<div class="biz-tin">TIN: '+RECEIPT_TIN+'</div>');
+  w.document.write('<div class="biz-sub">'+RECEIPT_BUSINESS.address+'</div>');
+  w.document.write('<div class="biz-sub">Tel: '+RECEIPT_BUSINESS.phone+' / +251 942 223 999</div>');
+  w.document.write('<div class="biz-sub">DATE: '+dateStr+'</div>');
+  w.document.write('<div class="divider2"></div>');
+  w.document.write('<div class="invoice-lbl">══ CASH INVOICE ══</div>');
+
+  // ── Order info ──
+  var locationLine = (d.city||'') + (d.country ? ', '+d.country : '');
+  [['Order ID', d.orderId||''],['Customer', d.customer||''],['Phone', d.phone||''],
+   ['Location', locationLine||''],['Order Type', d.orderType||''],['Operator', d.employee||'']
+  ].forEach(function(row){
+    if (!row[1]) return;
+    w.document.write('<div class="info-row"><span class="lbl">'+row[0]+'</span><span class="val">'+row[1]+'</span></div>');
+  });
+  w.document.write('<div class="divider"></div>');
+
+  // ── Items ──
+  w.document.write('<table><thead><tr>'+hdrCols+'</tr></thead>');
+  w.document.write('<tbody>'+rows+'</tbody>');
+  if (showTotals) w.document.write('<tfoot>'+footerRows+'</tfoot>');
+  w.document.write('</table>');
+  w.document.write('<div class="divider2"></div>');
+
+  // ── Large QR (200×200 like a real thermal receipt) ──
+  w.document.write('<div id="qrcode"></div>');
+  w.document.write('<div class="scan-lbl">Scan to view receipt online</div>');
+  w.document.write('<div class="divider"></div>');
+
+  // ── Footer ──
+  w.document.write('<div class="validity">This receipt is valid only for Asella Organic orders.</div>');
+  w.document.write('<div class="footer"><div>Thank you for your order!</div><div>'+RECEIPT_BUSINESS.website+'</div></div>');
+  w.document.write('<div class="noprint">');
+  w.document.write('<button onclick="window.print()" style="padding:10px 26px;background:#065f46;color:#fff;border:none;border-radius:7px;cursor:pointer;font-size:14px;margin-right:8px">🖨 Print (80mm)</button>');
+  w.document.write('<button onclick="window.close()" style="padding:10px 18px;background:#e2e8f0;color:#2d3748;border:none;border-radius:7px;cursor:pointer;font-size:14px">Close</button>');
+  w.document.write('</div></body></html>');
+  w.document.close();
+
+  // 200×200 QR — fills full width like a real thermal receipt
+  w.onload = function() {
+    try {
+      new w.QRCode(w.document.getElementById('qrcode'), {
+        text: qrContent, width: 200, height: 200,
+        colorDark: '#000000', colorLight: '#ffffff',
+        correctLevel: w.QRCode.CorrectLevel.M
+      });
+    } catch(qe) {
+      var qd = w.document.getElementById('qrcode');
+      if (qd) qd.innerHTML = '<div style="font-size:10px;color:#666;text-align:center">[QR: '+(''+d.orderId).slice(0,20)+']</div>';
+    }
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════
+function showLoader(id, show) {
+  var el = document.getElementById(id);
+  if (el) el.style.display = show ? 'flex' : 'none';
+}
+
+// Init
+buildProductCards();
+applyUserSession();
+
+// Quick login on Enter
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeOverlay();
+    hideLoginModal();
+    closeSidebar();
+  }
+});
+// ── FLAG COUNTRY CODE PICKER ──────────────────────────────────────
+var _CC=[
+  {f:'🇪🇹',n:'Ethiopia',c:'+251'},{f:'🇺🇸',n:'United States',c:'+1'},
+  {f:'🇬🇧',n:'United Kingdom',c:'+44'},{f:'🇨🇦',n:'Canada',c:'+1'},
+  {f:'🇦🇺',n:'Australia',c:'+61'},{f:'🇩🇪',n:'Germany',c:'+49'},
+  {f:'🇫🇷',n:'France',c:'+33'},{f:'🇮🇹',n:'Italy',c:'+39'},
+  {f:'🇪🇸',n:'Spain',c:'+34'},{f:'🇨🇳',n:'China',c:'+86'},
+  {f:'🇮🇳',n:'India',c:'+91'},{f:'🇯🇵',n:'Japan',c:'+81'},
+  {f:'🇰🇷',n:'South Korea',c:'+82'},{f:'🇧🇷',n:'Brazil',c:'+55'},
+  {f:'🇷🇺',n:'Russia',c:'+7'},{f:'🇳🇬',n:'Nigeria',c:'+234'},
+  {f:'🇰🇪',n:'Kenya',c:'+254'},{f:'🇹🇿',n:'Tanzania',c:'+255'},
+  {f:'🇺🇬',n:'Uganda',c:'+256'},{f:'🇷🇼',n:'Rwanda',c:'+250'},
+  {f:'🇸🇴',n:'Somalia',c:'+252'},{f:'🇸🇩',n:'Sudan',c:'+249'},
+  {f:'🇸🇸',n:'South Sudan',c:'+211'},{f:'🇩🇯',n:'Djibouti',c:'+253'},
+  {f:'🇪🇷',n:'Eritrea',c:'+291'},{f:'🇿🇦',n:'South Africa',c:'+27'},
+  {f:'🇬🇭',n:'Ghana',c:'+233'},{f:'🇪🇬',n:'Egypt',c:'+20'},
+  {f:'🇲🇦',n:'Morocco',c:'+212'},{f:'🇸🇦',n:'Saudi Arabia',c:'+966'},
+  {f:'🇦🇪',n:'UAE',c:'+971'},{f:'🇶🇦',n:'Qatar',c:'+974'},
+  {f:'🇰🇼',n:'Kuwait',c:'+965'},{f:'🇮🇷',n:'Iran',c:'+98'},
+  {f:'🇮🇶',n:'Iraq',c:'+964'},{f:'🇹🇷',n:'Turkey',c:'+90'},
+  {f:'🇮🇱',n:'Israel',c:'+972'},{f:'🇵🇰',n:'Pakistan',c:'+92'},
+  {f:'🇧🇩',n:'Bangladesh',c:'+880'},{f:'🇱🇰',n:'Sri Lanka',c:'+94'},
+  {f:'🇳🇵',n:'Nepal',c:'+977'},{f:'🇮🇩',n:'Indonesia',c:'+62'},
+  {f:'🇲🇾',n:'Malaysia',c:'+60'},{f:'🇹🇭',n:'Thailand',c:'+66'},
+  {f:'🇻🇳',n:'Vietnam',c:'+84'},{f:'🇵🇭',n:'Philippines',c:'+63'},
+  {f:'🇸🇬',n:'Singapore',c:'+65'},{f:'🇲🇽',n:'Mexico',c:'+52'},
+  {f:'🇦🇷',n:'Argentina',c:'+54'},{f:'🇨🇴',n:'Colombia',c:'+57'},
+  {f:'🇨🇱',n:'Chile',c:'+56'},{f:'🇳🇱',n:'Netherlands',c:'+31'},
+  {f:'🇧🇪',n:'Belgium',c:'+32'},{f:'🇵🇱',n:'Poland',c:'+48'},
+  {f:'🇸🇪',n:'Sweden',c:'+46'},{f:'🇳🇴',n:'Norway',c:'+47'},
+  {f:'🇩🇰',n:'Denmark',c:'+45'},{f:'🇫🇮',n:'Finland',c:'+358'},
+  {f:'🇨🇭',n:'Switzerland',c:'+41'},{f:'🇦🇹',n:'Austria',c:'+43'},
+  {f:'🇵🇹',n:'Portugal',c:'+351'},{f:'🇬🇷',n:'Greece',c:'+30'},
+  {f:'🇷🇴',n:'Romania',c:'+40'},{f:'🇨🇿',n:'Czech Republic',c:'+420'},
+  {f:'🇭🇺',n:'Hungary',c:'+36'},{f:'🇺🇦',n:'Ukraine',c:'+380'},
+  {f:'🇮🇪',n:'Ireland',c:'+353'},{f:'🇳🇿',n:'New Zealand',c:'+64'},
+  {f:'🇿🇲',n:'Zambia',c:'+260'},{f:'🇿🇼',n:'Zimbabwe',c:'+263'},
+  {f:'🇲🇿',n:'Mozambique',c:'+258'},{f:'🇦🇴',n:'Angola',c:'+244'},
+  {f:'🇨🇩',n:'DR Congo',c:'+243'},{f:'🇨🇲',n:'Cameroon',c:'+237'}
+];
+function ccBuild(listId,inputId,btnId,q){
+  var el=document.getElementById(listId); if(!el) return;
+  var cur=(document.getElementById(inputId)||{value:'+251'}).value;
+  var t=(q||'').toLowerCase(); el.innerHTML='';
+  _CC.forEach(function(o){
+    if(t&&o.n.toLowerCase().indexOf(t)===-1&&o.c.indexOf(t)===-1) return;
+    var d=document.createElement('div'); d.className='cc-opt'+(o.c===cur?' sel':'');
+    d.innerHTML='<span class="cc-opt-flag">'+o.f+'</span><span class="cc-opt-name">'+o.n+'</span><span class="cc-opt-code">'+o.c+'</span>';
+    d.onclick=function(){ccPick(inputId,btnId,listId.replace('List','Drop'),o);};
+    el.appendChild(d);
+  });
+}
+function ccPick(inputId,btnId,dropId,o){
+  var i=document.getElementById(inputId); if(i) i.value=o.c;
+  var b=document.getElementById(btnId);
+  if(b){
+    var flagEl=b.querySelector('.cc-flag'); if(flagEl) flagEl.textContent=o.f;
+    var codeEl=b.querySelector('span:not(.cc-flag):not(.cc-arr)'); if(codeEl) codeEl.textContent=o.c;
+  }
+  var d=document.getElementById(dropId); if(d) d.classList.remove('open');
+  if(b) b.classList.remove('open');
+}
+function ccToggle(inputId,dropId,btnId){
+  var drop=document.getElementById(dropId),btn=document.getElementById(btnId);
+  if(!drop) return;
+  var op=!drop.classList.contains('open');
+  document.querySelectorAll('.cc-drop.open').forEach(function(d){d.classList.remove('open');});
+  document.querySelectorAll('.cc-btn.open').forEach(function(b){b.classList.remove('open');});
+  if(op){
+    ccBuild(dropId.replace('Drop','List'),inputId,btnId,'');
+    drop.classList.add('open'); if(btn) btn.classList.add('open');
+    var s=drop.querySelector('input[type=text]');
+    if(s){s.value=''; setTimeout(function(){s.focus();},40);}
+  }
+}
+function ccSearch(el,dropId,inputId,btnId){
+  ccBuild(dropId.replace('Drop','List'),inputId,btnId,el.value);
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.cc-drop')&&!e.target.closest('.cc-btn')){
+    document.querySelectorAll('.cc-drop.open').forEach(function(d){d.classList.remove('open');});
+    document.querySelectorAll('.cc-btn.open').forEach(function(b){b.classList.remove('open');});
+  }
+});
+document.addEventListener('DOMContentLoaded',function(){
+  ccBuild('fCCList','fCC','fCCBtn','');
+  ccBuild('vCCList','vCC','vCCBtn','');
+});
+// ─────────────────────────────────────────────────────────────────
+</script>
+
+<!-- ─── RECEIPT MODAL ─── -->
+<div id="rcModal" class="rc-overlay" onclick="if(event.target===this)closeReceipt()">
+  <div class="rc-card">
+    <div class="rc-head">
+      <h2>🌿 Asella Organic Enterprise</h2>
+      <div class="rc-dt">Addis Ababa, Piazza Giorgis, Ethel Appartment</div>
+      <div class="rc-dt">Tel: +251 909 122 623 / +251 942 223 999 &nbsp;|&nbsp; TIN: 0093291109</div>
+    </div>
+    <div class="rc-body">
+      <div style="text-align:center;font-weight:bold;font-size:12px;letter-spacing:1px;padding:4px 0;border-top:1px solid #000;border-bottom:1px solid #000;margin-bottom:8px">═ CASH INVOICE ═</div>
+      <div class="rc-grid">
+        <div class="rc-lbl">Date</div>       <div class="rc-val" id="rcDt">—</div>
+        <div class="rc-lbl">Order ID</div>   <div class="rc-val" id="rcOrderId">—</div>
+        <div class="rc-lbl">Customer</div>   <div class="rc-val" id="rcCustomer">—</div>
+        <div class="rc-lbl">Phone</div>      <div class="rc-val" id="rcPhone">—</div>
+        <div class="rc-lbl">Location</div>   <div class="rc-val" id="rcCity">—</div>
+        <div class="rc-lbl">Order Type</div> <div class="rc-val" id="rcOrderType">—</div>
+        <div class="rc-lbl">Cashier</div>    <div class="rc-val" id="rcEmployee">—</div>
+      </div>
+      <hr class="rc-divider">
+      <div class="rc-sec">Items</div>
+      <table class="rc-tbl">
+        <thead><tr><th>Item</th><th class="rc-tc">PKG</th><th class="rc-tc">QTY</th><th id="rcAmtTh" class="rc-tr">PRICE</th></tr></thead>
+        <tbody id="rcItemsBody"></tbody>
+      </table>
+      <div id="rcSumBox" class="rc-sum">
+        <div class="rc-row"><span>Subtotal</span><span id="rcSubtotal">0 ETB</span></div>
+        <div class="rc-row big"><span>TOTAL</span><span id="rcTotal">0 ETB</span></div>
+      </div>
+      <div id="rcFranchisePriceBox" style="display:none;margin-top:8px;padding:8px 10px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px">
+        <div style="font-size:10px;font-weight:700;color:#166534;margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px">💰 Franchise Price Entry</div>
+        <div style="font-size:10px;color:#4b7c5a;margin-bottom:6px">Enter per-item prices above — total updates live</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;border-top:1px dashed #86efac;padding-top:6px">
+          <span>TOTAL</span><span id="rcFranTotal" style="color:#166534">—</span>
+        </div>
+      </div>
+      <hr class="rc-divider">
+      <div class="rc-foot">
+        <div class="rc-st">Status: <span id="rcStatus">Pending</span></div>
+        <div style="text-align:center;margin:5px 0;font-size:10px;border:1px solid #000;padding:4px"><em>This receipt is valid only for Asella Organic orders.</em></div>
+        <div class="rc-ty">Thank you for your order!</div>
+        <div>asella-organic.com</div>
+      </div>
+      <div class="rc-btns">
+        <button class="rc-btn rc-btn-print" onclick="printReceipt()"><i class="fas fa-print"></i> Print (80mm)</button>
+        <button class="rc-btn rc-btn-track" onclick="closeReceipt();openPanel('Tracking')"><i class="fas fa-search"></i> Track Order</button>
+        <button class="rc-btn rc-btn-close" onclick="closeReceipt()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
