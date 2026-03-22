@@ -32,7 +32,7 @@
   --surface2:   rgba(0,0,0,0.09);
   --border:     rgba(0,0,0,0.11);
   --border2:    rgba(0,0,0,0.18);
-  --accent:     #c8870e;     /* ← darker gold for light bg contrast */
+  --accent:     #9a6e1a;     /* ← darker gold for light bg contrast */
   --accent-rgb: 154,110,26;
   --accent-h:   #b8882a;
   --text:       #0f0d09;     /* ← near-black */
