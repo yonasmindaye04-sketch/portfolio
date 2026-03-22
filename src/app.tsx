@@ -500,7 +500,7 @@ export default function App() {
       {/* ── FOOTER ───────────────────────────────────────────── */}
       <footer>
         <div className="footer-logo">Ethio<span>Digital</span></div>
-        <div className="footer-copy"><i className="fa-solid fa-heart" style={{ color:'var(--accent)' }} /> © 2026 EthioDigital · Built with care in Ethiopia</div>
+        <div className="footer-copy"><i style={{ color:'var(--accent)' }} /> © 2026 EthioDigital · Built with care in Ethiopia</div>
         <div className="footer-links">
           {[['#hero','fa-solid fa-house'],['https://t.me/yona64','fa-brands fa-telegram'],['mailto:yonasmindaye04@gmail.com','fa-solid fa-envelope'],['https://wa.me/251910011818','fa-brands fa-whatsapp']].map(([href,icon]) => (
             <a key={icon} href={href} target={href.startsWith('http')?'_blank':undefined} rel="noopener noreferrer"><i className={icon} /></a>

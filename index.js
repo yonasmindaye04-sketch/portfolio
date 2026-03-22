@@ -11,15 +11,15 @@ const EMAIL      = (process.env.EMAIL      || '').trim();
 const EMAIL_PASS = (process.env.EMAIL_PASS || '').replace(/\s+/g, '');  // removes ALL spaces
 
 if (!EMAIL || !EMAIL_PASS) {
-  console.error('\n❌  MISSING .env VARS — create server/.env with:\n');
+  console.error('\n  MISSING .env VARS — create server/.env with:\n');
   console.error('    EMAIL=yonasmindaye04@gmail.com');
   console.error('    EMAIL_PASS=abcdefghijklmnop   ← 16 chars, no spaces\n');
-  console.error('👉  https://myaccount.google.com/apppasswords\n');
+  console.error('  https://myaccount.google.com/apppasswords\n');
   process.exit(1);
 }
 
-console.log('✅  EMAIL loaded:', EMAIL);
-console.log('✅  PASS length :', EMAIL_PASS.length, '(should be 16)');
+console.log(' EMAIL loaded:', EMAIL);
+console.log('  PASS length :', EMAIL_PASS.length, '(should be 16)');
 
 const app = express();
 
@@ -43,11 +43,11 @@ const transporter = nodemailer.createTransport({
 
 transporter.verify((err) => {
   if (err) {
-    console.error('\n❌  SMTP FAILED:', err.message);
+    console.error('\n  SMTP FAILED:', err.message);
     console.error('    → Your App Password is wrong or 2FA is not enabled.');
     console.error('    → Fix: https://myaccount.google.com/apppasswords\n');
   } else {
-    console.log('✅  SMTP verified — ready to send emails\n');
+    console.log('  SMTP verified — ready to send emails\n');
   }
 });
 
@@ -70,7 +70,7 @@ app.post('/api/contact', async (req, res) => {
       from:    `"EthioDigital" <${EMAIL}>`,
       to:      EMAIL,
       replyTo: email,
-      subject: `🚀 New Inquiry from ${name}`,
+      subject: ` New Inquiry from ${name}`,
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#09090b;color:#f4f0e8;border-radius:12px;overflow:hidden;">
           <div style="background:linear-gradient(135deg,#d4a853,#e8c06a);padding:28px 32px;">
@@ -97,7 +97,7 @@ app.post('/api/contact', async (req, res) => {
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#09090b;color:#f4f0e8;border-radius:12px;overflow:hidden;">
           <div style="background:linear-gradient(135deg,#d4a853,#e8c06a);padding:28px 32px;">
-            <h2 style="margin:0;color:#09090b;">Thanks for reaching out! 🚀</h2>
+            <h2 style="margin:0;color:#09090b;">Thanks for reaching out! </h2>
           </div>
           <div style="padding:32px;line-height:1.7;">
             <p>Hi <strong>${name.split(' ')[0]}</strong>,</p>
@@ -112,11 +112,11 @@ app.post('/api/contact', async (req, res) => {
         </div>`,
     });
 
-    console.log(`📨  Sent for ${name} <${email}>`);
+    console.log(`  Sent for ${name} <${email}>`);
     res.json({ success: true });
 
   } catch (err) {
-    console.error('❌  Send error:', err.message);
+    console.error('  Send error:', err.message);
     res.status(500).json({ success: false, message: 'Email failed. Please contact us directly on Telegram.' });
   }
 });
