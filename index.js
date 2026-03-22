@@ -1,8 +1,8 @@
 // server/index.js
-const express    = require('express');
-const cors       = require('cors');
-const nodemailer = require('nodemailer');
-const dotenv     = require('dotenv');
+import express  from 'express'; 
+import cors from 'cors';
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv'; 
 
 dotenv.config();
 
@@ -30,6 +30,7 @@ app.use(cors({
     'http://localhost:5174',
     'http://localhost:3000',
     'http://127.0.0.1:5173',
+    'https://yonasmindaye04-sketch.github.io',
   ],
   methods: ['GET', 'POST'],
 }));
