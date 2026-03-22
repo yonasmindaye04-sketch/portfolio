@@ -42,7 +42,7 @@ const stats = [
 ];
 
 const testimonials = [
-  { text:'They delivered our corporate website on time and it looks premium. Our sales increased 3x after launch!',       name:'Abebe Kebede',     title:'CEO, Kebede Enterprises',      initials:'AK' },
+  { text:'They delivered our corporate website on time and it looks premium. Our sales increased 3x after launch!',       name:'Nahom Eshetu',     title:'CEO, Asella Organic',      initials:'NE' },
   { text:'Best e-commerce platform we ever had. Clean design, blazing fast performance, and outstanding support.',        name:'Selamawit Tesfaye',title:'Founder, Selam Fashion',       initials:'ST' },
   { text:'Our hotel booking system was built perfectly — intuitive, beautiful, and exactly what our guests needed.',      name:'Dawit Mekonnen',   title:'General Manager, Addis Hotel', initials:'DM' },
 ];
@@ -471,7 +471,7 @@ export default function App() {
               <div className="form-row">
                 <div className={`form-group ${fieldErrors.name ? 'has-error' : ''}`}>
                   <label htmlFor="name"><i className="fa-solid fa-user" /> Full Name <span className="req">*</span></label>
-                  <input id="name" type="text" name="name" placeholder="Abebe Kebede" value={formData.name} onChange={handleChange} className={fieldErrors.name ? 'input-error' : ''} />
+                  <input id="name" type="text" name="name" placeholder="Nahom Eshetu" value={formData.name} onChange={handleChange} className={fieldErrors.name ? 'input-error' : ''} />
                   {fieldErrors.name && <span className="field-error"><i className="fa-solid fa-triangle-exclamation" /> {fieldErrors.name}</span>}
                 </div>
                 <div className={`form-group ${fieldErrors.email ? 'has-error' : ''}`}>
