@@ -9,5 +9,5 @@ export default defineConfig({
       '/api': 'http://localhost:3001'   // forwards API calls to your backend
     }
   },
-  base: '/portfolio/',
+  base: '/',
 })
